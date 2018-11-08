@@ -46,6 +46,24 @@ class Home extends PureComponent {
             <Text weight="medium">Go to Test Screen</Text>
           </View>
         </RectButton>
+        <RectButton
+          onPress={() => {
+            navigation.navigate('HomePage')
+          }}
+        >
+          <View>
+            <Text weight="medium">Go to Home Page</Text>
+          </View>
+        </RectButton>
+        <RectButton
+          onPress={() => {
+            navigation.navigate('History')
+          }}
+        >
+          <View>
+            <Text weight="medium">Go to History Page</Text>
+          </View>
+        </RectButton>
       </ScrollView>
     )
   }

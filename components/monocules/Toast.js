@@ -12,16 +12,14 @@ const Toast = styled(Animated.View)`
     top: css`
       background-color: ${BLUE};
       top: 0;
-      left: 0;
-      right: 0;
     `,
     bottom: css`
       background-color: ${RED};
       bottom: 0;
-      left: 0;
-      right: 0;
     `,
   })}
+  left: 0;
+  right: 0;
   height: 50px;
   flex-direction: row;
   padding: 10px;

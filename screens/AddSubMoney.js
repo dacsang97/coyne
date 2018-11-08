@@ -56,9 +56,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: colors.BLACK_DARKER,
     borderRadius: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 1, height: 1 },
   },
   listCategory: {
     flex: 1,
@@ -80,9 +77,6 @@ const styles = StyleSheet.create({
   calculator: {
     backgroundColor: colors.BLACK_DARKER,
     borderRadius: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 2, height: 2 },
   },
   row: {
     flexDirection: 'row',

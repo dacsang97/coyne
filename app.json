@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "prm-319",
+    "name": "coyn",
     "description": "This project is really great.",
-    "slug": "prm-391",
+    "slug": "coyn",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],

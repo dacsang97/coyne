@@ -1,36 +1,32 @@
 import React, { Component } from 'react'
 import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import * as colors from '../constants/colors'
 
 const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
 const operators = ['+', '-', '×', '÷']
 
-const buttonList = [
-  ['1', '2', '3', '÷'],
-  ['4', '5', '6', '×'],
-  ['7', '8', '9', '-'],
-  ['C', '0', '<', '+'],
-]
+const buttonList = [['1', '2', '3', '÷'], ['4', '5', '6', '×'], ['7', '8', '9', '-'], ['C', '0', '<', '+']]
 
 const categoryList = [
   /* eslint-disable global-require */
   {
-    icon: require('../../assets/icons/business.png'),
+    icon: require('../assets/icons/business.png'),
     name: 'investments',
   },
   {
-    icon: require('../../assets/icons/hack.png'),
+    icon: require('../assets/icons/hack.png'),
     name: 'Hack',
   },
   {
-    icon: require('../../assets/icons/gift.png'),
+    icon: require('../assets/icons/gift.png'),
     name: 'gifts',
   },
   {
-    icon: require('../../assets/icons/clothes.png'),
+    icon: require('../assets/icons/clothes.png'),
     name: 'clothes',
   },
   {
-    icon: require('../../assets/icons/cafe.png'),
+    icon: require('../assets/icons/cafe.png'),
     name: 'coffee',
   },
   /* eslint-enable global-require */
@@ -63,22 +59,22 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   subText: {
-    color: '#AEB2BB',
+    color: colors.GRAY,
     fontSize: 16,
   },
   type: {
-    color: '#42A0FA',
+    color: colors.BLUE,
     fontSize: 18,
   },
   listWrapper: {
     flex: 1,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#20272F',
+    backgroundColor: colors.BLACK_DARKER,
     borderRadius: 5,
     shadowColor: '#000',
     shadowOpacity: 0.8,
-    shadowOffset: { width: 2, height: 2 },
+    shadowOffset: { width: 1, height: 1 },
   },
   listCategory: {
     flex: 1,
@@ -97,12 +93,12 @@ const styles = StyleSheet.create({
     height: 30,
   },
   categoryName: {
-    color: '#AEB2BB',
+    color: colors.GRAY,
     fontSize: 18,
     marginTop: 10,
   },
   calculator: {
-    backgroundColor: '#20272F',
+    backgroundColor: colors.BLACK_DARKER,
     borderRadius: 5,
     shadowColor: '#000',
     shadowOpacity: 0.8,
@@ -124,10 +120,10 @@ const styles = StyleSheet.create({
     fontWeight: '200',
   },
   disabled: {
-    color: '#AEB2BB',
+    color: colors.GRAY,
   },
   clearButton: {
-    color: '#c53f6a',
+    color: colors.RED,
   },
 })
 
@@ -136,6 +132,7 @@ export default class AddSubMoney extends Component {
     super(props)
     this.state = {
       money: 0,
+      // eslint-disable-next-line
       savedMoney: 0,
       current: '',
       currentString: '',
@@ -145,7 +142,7 @@ export default class AddSubMoney extends Component {
   }
 
   onButtonPress(sign) {
-    const { current, currentOperator, savedMoney } = this.state
+    const { current, currentOperator } = this.state
     if (sign === 'C') {
       this.setState(() => ({
         money: 0,
@@ -158,9 +155,7 @@ export default class AddSubMoney extends Component {
     }
     this.setState(prev => ({
       currentString:
-        sign === '<'
-          ? prev.currentString.substring(0, prev.currentString.length - 1)
-          : prev.currentString + sign,
+        sign === '<' ? prev.currentString.substring(0, prev.currentString.length - 1) : prev.currentString + sign,
     }))
     if (operators.includes(sign)) {
       this.setState(prev => ({
@@ -170,8 +165,7 @@ export default class AddSubMoney extends Component {
       }))
     } else if (numbers.includes(sign) || sign === '<') {
       this.setState(prev => ({
-        current:
-          sign === '<' ? prev.current.substring(0, prev.current.length - 1) : prev.current + sign,
+        current: sign === '<' ? prev.current.substring(0, prev.current.length - 1) : prev.current + sign,
       }))
       const currentMoney = sign === '<' ? current.substring(0, current.length - 1) : current + sign
       // break if current is empty
@@ -184,7 +178,6 @@ export default class AddSubMoney extends Component {
           money: parseInt(currentMoney, 10),
         }))
       } else if (currentOperator === '+') {
-        console.log('add', savedMoney, currentMoney)
         this.setState(prev => ({
           money: prev.savedMoney + parseInt(currentMoney, 10),
         }))
@@ -224,7 +217,6 @@ export default class AddSubMoney extends Component {
   }
 
   render() {
-    console.log(this.props)
     // eslint-disable-next-line
     const { isSub } = this.props.navigation.state.params
     const { money, currentString, category } = this.state

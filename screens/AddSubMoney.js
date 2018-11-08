@@ -232,7 +232,7 @@ export default class AddSubMoney extends Component {
           <Text style={styles.subText}>{currentString}</Text>
           <Text style={styles.type}>{isSub ? 'OUTCOME' : 'INCOME'}</Text>
         </View>
-        <View style={{ flex: 1 }}>
+        <View style={{ height: 150 }}>
           <TouchableOpacity>
             <Text style={styles.subText}>New Category</Text>
           </TouchableOpacity>

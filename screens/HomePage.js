@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Ionicons } from '@expo/vector-icons'
-import { View, Text, StyleSheet } from 'react-native'
-import { BLACK_DARKER } from '../constants/colors'
+import { View, StyleSheet } from 'react-native'
+import { Text } from '../components/atoms'
+import { BLACK_DARKER, WHITE, GRAY, RED, BLUE, BLACK } from '../constants/colors'
 
 const styles = StyleSheet.create({
   screen: {
@@ -16,12 +17,13 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   date: {
-    color: '#e0e0e0',
-    fontSize: 20,
+    color: WHITE,
+    fontSize: 26,
+    fontWeight: 'bold',
   },
   time: {
-    color: '#9e9e9e',
-    fontSize: 20,
+    color: GRAY,
+    fontSize: 26,
   },
   saveMoney: {
     flex: 1,
@@ -32,46 +34,48 @@ const styles = StyleSheet.create({
   childMoney: {
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: '#212121',
-    width: '47%',
+    borderColor: BLACK,
+    width: '46%',
     height: 50,
     alignItems: 'flex-end',
     justifyContent: 'center',
     marginLeft: 10,
     paddingRight: 10,
-    backgroundColor: '#212121',
+    backgroundColor: BLACK,
   },
   childEx: {
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: '#212121',
-    width: '47%',
+    borderColor: BLACK,
+    width: '46%',
     height: 50,
     alignItems: 'flex-end',
     justifyContent: 'center',
     marginRight: 10,
     paddingRight: 10,
-    backgroundColor: '#212121',
+    backgroundColor: BLACK,
   },
   number: {
-    color: '#e0e0e0',
-    fontSize: 20,
+    color: WHITE,
+    fontSize: 24,
   },
   income: {
-    color: '#1976d2',
+    fontSize: 13,
+    color: BLUE,
   },
   expense: {
-    color: '#ff3d00',
+    color: RED,
+    fontSize: 13,
   },
   allBalance: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-end',
     height: 50,
-    backgroundColor: '#212121',
+    backgroundColor: BLACK,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: '#212121',
+    borderColor: BLACK,
     paddingRight: 10,
     marginLeft: 10,
     marginRight: 10,
@@ -84,10 +88,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   pinned: {
-    color: 'grey',
+    color: GRAY,
+    fontSize: 13,
   },
   balance: {
-    color: '#9e9e9e',
+    color: GRAY,
   },
   footer: {
     marginBottom: -10,
@@ -106,53 +111,71 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 })
-export default () => (
-  <View style={styles.screen}>
-    <View style={styles.dateView}>
-      <View>
-        <Text style={styles.date}>Friday,</Text>
-      </View>
-      <View>
-        <Text style={styles.time}>November 2</Text>
-      </View>
-    </View>
-    <View style={styles.saveMoney}>
-      <View style={styles.childMoney}>
-        <View>
-          <Text style={styles.number}>$ 66888.66</Text>
+
+// eslint-disable-next-line react/prefer-stateless-function
+class HomePage extends PureComponent {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return (
+      <View style={styles.screen}>
+        <View style={styles.dateView}>
+          <View>
+            <Text style={styles.date}>Friday,</Text>
+          </View>
+          <View>
+            <Text style={styles.time}>November 2</Text>
+          </View>
         </View>
-        <View>
-          <Text style={styles.income}>INCOME</Text>
+        <View style={styles.saveMoney}>
+          <View style={styles.childMoney}>
+            <View>
+              <Text style={styles.number}>$ 66888.66</Text>
+            </View>
+            <View>
+              <Text style={styles.income} upper>
+                Income
+              </Text>
+            </View>
+          </View>
+          <View style={styles.childEx}>
+            <View>
+              <Text style={styles.number}>-$ 000.00</Text>
+            </View>
+            <View>
+              <Text style={styles.expense} upper>
+                Expense
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.allBalance}>
+          <View>
+            <Text style={styles.number}>$ 66888.66</Text>
+          </View>
+          <View>
+            <Text style={styles.balance} upper>
+              Balance
+            </Text>
+          </View>
+        </View>
+        <View style={styles.printed}>
+          <Text style={styles.pinned}>PINNED</Text>
+        </View>
+        <View style={styles.footer}>
+          <View style={styles.search}>
+            <Ionicons name="ios-search" size={32} color="#9e9e9e" />
+          </View>
+          <View style={styles.footerRight}>
+            <Ionicons name="md-more" size={32} color="#9e9e9e" />
+            <Ionicons name="ios-finger-print" size={32} color="#d84315" style={styles.finger} />
+          </View>
         </View>
       </View>
-      <View style={styles.childEx}>
-        <View>
-          <Text style={styles.number}>-$ 000.00</Text>
-        </View>
-        <View>
-          <Text style={styles.expense}>EXPENSE</Text>
-        </View>
-      </View>
-    </View>
-    <View style={styles.allBalance}>
-      <View>
-        <Text style={styles.number}>$ 66888.66</Text>
-      </View>
-      <View>
-        <Text style={styles.balance}>BALANCE</Text>
-      </View>
-    </View>
-    <View style={styles.printed}>
-      <Text style={styles.pinned}>PINNED</Text>
-    </View>
-    <View style={styles.footer}>
-      <View style={styles.search}>
-        <Ionicons name="ios-search" size={32} color="#9e9e9e" />
-      </View>
-      <View style={styles.footerRight}>
-        <Ionicons name="md-more" size={32} color="#9e9e9e" />
-        <Ionicons name="ios-finger-print" size={32} color="#d84315" style={styles.finger} />
-      </View>
-    </View>
-  </View>
-)
+    )
+  }
+}
+export default HomePage

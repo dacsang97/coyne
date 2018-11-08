@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Ionicons } from '@expo/vector-icons'
-import { TextInput, View, StyleSheet, Text } from 'react-native'
-import { BLACK_DARKER } from '../constants/colors'
+import { TextInput, View, StyleSheet } from 'react-native'
+import { Text } from '../components/atoms'
+import { BLACK_DARKER, WHITE, GRAY, RED, BLUE, BLACK } from '../constants/colors'
 
 const styles = StyleSheet.create({
   Screen: {
@@ -16,8 +17,8 @@ const styles = StyleSheet.create({
   textSearch: {
     borderRadius: 50,
     borderWidth: 0.5,
-    borderColor: '#212121',
-    backgroundColor: '#212121',
+    borderColor: BLACK,
+    backgroundColor: BLACK,
     height: 30,
     paddingLeft: 10,
     color: 'white',
@@ -35,16 +36,18 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   priceHistory: {
-    color: '#1976d2',
+    color: BLUE,
+    fontSize: 13,
   },
   incMoney: {
-    color: '#ff3d00',
+    color: RED,
+    fontSize: 13,
   },
   month: {
-    color: '#e0e0e0',
+    color: WHITE,
   },
   years: {
-    color: '#9e9e9e',
+    color: GRAY,
   },
   cash: {
     flex: 1,
@@ -52,8 +55,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: '#212121',
-    backgroundColor: '#212121',
+    borderColor: BLACK,
+    backgroundColor: BLACK,
     height: 50,
     alignItems: 'center',
     marginLeft: 5,
@@ -68,10 +71,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   moneyCash: {
-    color: '#e0e0e0',
-    fontSize: 20,
+    color: WHITE,
+    fontSize: 24,
   },
   titleCash: {
+    fontSize: 13,
     color: '#e0e0e0',
   },
   iconMoney: {
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   dateTextContent: {
-    color: '#9e9e9e',
+    color: GRAY,
     fontSize: 12,
     marginTop: 5,
   },
@@ -129,7 +133,9 @@ export default class History extends Component {
           </View>
           <View style={styles.childCash}>
             <Text style={styles.moneyCash}>$ 66888.666</Text>
-            <Text style={styles.titleCash}>CASH</Text>
+            <Text style={styles.titleCash} upper>
+              Cash
+            </Text>
           </View>
         </View>
         <View style={styles.dateContent}>

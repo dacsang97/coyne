@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, ScrollView, StyleSheet, Image } from 'react-native'
+import { Button, Text } from '../components/atoms'
 import * as colors from '../constants/colors'
 
 const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
@@ -35,7 +36,7 @@ const categoryList = [
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#242B33',
+    backgroundColor: colors.BLACK,
     justifyContent: 'space-between',
     padding: 10,
   },
@@ -48,23 +49,6 @@ const styles = StyleSheet.create({
   },
   moneyWrapper: {
     height: 54,
-  },
-  currentMoney: {
-    fontSize: 64,
-    lineHeight: 64,
-    color: '#fff',
-    fontWeight: '400',
-    textAlignVertical: 'bottom',
-    paddingBottom: 0,
-    marginBottom: 0,
-  },
-  subText: {
-    color: colors.GRAY,
-    fontSize: 16,
-  },
-  type: {
-    color: colors.BLUE,
-    fontSize: 18,
   },
   listWrapper: {
     flex: 1,
@@ -91,11 +75,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     height: 30,
-  },
-  categoryName: {
-    color: colors.GRAY,
-    fontSize: 18,
-    marginTop: 10,
+    marginBottom: 10,
   },
   calculator: {
     backgroundColor: colors.BLACK_DARKER,
@@ -114,10 +94,7 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   buttonText: {
-    fontSize: 32,
     fontFamily: 'Helvetica Neue',
-    color: '#fff',
-    fontWeight: '200',
   },
   disabled: {
     color: colors.GRAY,
@@ -225,28 +202,34 @@ export default class AddSubMoney extends Component {
         <View style={styles.moneyContainer}>
           <View style={styles.money}>
             <View style={styles.moneyWrapper}>
-              <Text style={styles.currentMoney}>{money.toFixed(0)}</Text>
+              <Text color="white" fontWeight="light" size={64} lh={64}>
+                {money.toFixed(0)}
+              </Text>
             </View>
-            <Text style={styles.subText}>USD</Text>
+            <Text color="gray">USD</Text>
           </View>
-          <Text style={styles.subText}>{currentString}</Text>
-          <Text style={styles.type}>{isSub ? 'OUTCOME' : 'INCOME'}</Text>
+          <Text color="gray">{currentString}</Text>
+          <Text color="blue" size={18}>
+            {isSub ? 'OUTCOME' : 'INCOME'}
+          </Text>
         </View>
         <View style={{ height: 150 }}>
-          <TouchableOpacity>
-            <Text style={styles.subText}>New Category</Text>
-          </TouchableOpacity>
+          <Button>
+            <Text color="gray">New Category</Text>
+          </Button>
           <View style={styles.listWrapper}>
             <ScrollView style={styles.listCategory} horizontal>
               {categoryList.map(cat => (
-                <TouchableOpacity
+                <Button
                   onPress={() => this.onSelectCategory(cat.name)}
                   key={`category_${cat.name}`}
                   style={[styles.category, cat.name === category && styles.selected]}
                 >
                   <Image resizeMode="contain" source={cat.icon} style={styles.icon} />
-                  <Text style={styles.categoryName}>{cat.name}</Text>
-                </TouchableOpacity>
+                  <Text color="gray" size="18">
+                    {cat.name}
+                  </Text>
+                </Button>
               ))}
             </ScrollView>
           </View>
@@ -255,13 +238,16 @@ export default class AddSubMoney extends Component {
           {buttonList.map(row => (
             <View key={`button_${row}`} style={styles.row}>
               {row.map(sign => (
-                <TouchableOpacity
+                <Button
                   onPress={() => this.onButtonPress(sign)}
                   disabled={this.disableButton(sign)}
                   key={`button_${sign}`}
                   style={styles.button}
                 >
                   <Text
+                    size={32}
+                    fontWeight="light"
+                    color="white"
                     style={[
                       styles.buttonText,
                       sign === 'C' && styles.clearButton,
@@ -270,7 +256,7 @@ export default class AddSubMoney extends Component {
                   >
                     {sign}
                   </Text>
-                </TouchableOpacity>
+                </Button>
               ))}
             </View>
           ))}

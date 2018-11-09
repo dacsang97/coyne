@@ -148,5 +148,3 @@ export default class History extends Component {
     )
   }
 }
-
-// skip this line if using Create React Native App

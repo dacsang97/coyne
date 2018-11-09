@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Ionicons } from '@expo/vector-icons'
 import { View, StyleSheet } from 'react-native'
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
 })
 
 // eslint-disable-next-line react/prefer-stateless-function
-class HomePage extends PureComponent {
+export default class HomePage extends Component {
   // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props)
@@ -178,4 +178,3 @@ class HomePage extends PureComponent {
     )
   }
 }
-export default HomePage

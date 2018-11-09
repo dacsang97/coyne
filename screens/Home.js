@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Animated from 'react-native-reanimated'
 import { RectButton } from 'react-native-gesture-handler'
 import { BLACK } from '../constants/colors'
 import { Text } from '../components/atoms'
-import { Toast } from '../components/monocules'
 
 const { event, Value, interpolate, Extrapolate, set, block, cond, call, greaterOrEq, lessOrEq } = Animated
 
@@ -59,43 +58,40 @@ class Home extends PureComponent {
   render() {
     const { navigation } = this.props
     return (
-      <Animated.View style={styles.container}>
-        <Animated.ScrollView backgroundColor={BLACK} onScroll={this.handleScroll} scrollEventThrottle={16}>
-          <Animated.Text style={{ fontSize: this.sizeTop }} medium upper color="red">
-            Home Screen
-          </Animated.Text>
-          <RectButton
-            onPress={() => {
-              navigation.navigate('Test')
-            }}
-          >
-            <View>
-              <Ionicons name="ios-microphone" />
-              <Text weight="medium">Go to Test Screen</Text>
-            </View>
-          </RectButton>
-          <RectButton
-            onPress={() => {
-              navigation.navigate('HomePage')
-            }}
-          >
-            <View>
-              <Text weight="medium">Go to Home Page</Text>
-            </View>
-          </RectButton>
-          <RectButton
-            onPress={() => {
-              navigation.navigate('History')
-            }}
-          >
-            <View>
-              <Text weight="medium">Go to History Page</Text>
-            </View>
-          </RectButton>
-        </Animated.ScrollView>
-        <Toast position="top" style={{ opacity: this.opacityTop }} />
-        <Toast position="bottom" style={{ opacity: this.opacityBottom }} />
-      </Animated.View>
+      // eslint-disable-next-line react/jsx-no-undef
+      <ScrollView style={styles.container} onScroll={this.handleScroll} scrollEventThrottle={16}>
+        <Text style={{ fontSize: 26 }} medium upper color="red">
+          Home Screen
+        </Text>
+        <RectButton
+          onPress={() => {
+            navigation.navigate('Test')
+          }}
+        >
+          <View>
+            <Ionicons name="ios-microphone" />
+            <Text weight="medium">Go to Test Screen</Text>
+          </View>
+        </RectButton>
+        <RectButton
+          onPress={() => {
+            navigation.navigate('HomePage')
+          }}
+        >
+          <View>
+            <Text weight="medium">Go to Home Page</Text>
+          </View>
+        </RectButton>
+        <RectButton
+          onPress={() => {
+            navigation.navigate('History')
+          }}
+        >
+          <View>
+            <Text weight="medium">Go to History Page</Text>
+          </View>
+        </RectButton>
+      </ScrollView>
     )
   }
 }

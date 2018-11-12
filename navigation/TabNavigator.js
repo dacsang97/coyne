@@ -13,7 +13,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
         tabBarIcon: <AntDesign name="wallet" color="#fff" size={22} />,
       },
     },
-    AddTransaction: {
+    Transaction: {
       screen: AddTransaction,
       navigationOptions: {
         title: '',

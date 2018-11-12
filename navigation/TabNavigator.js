@@ -1,5 +1,4 @@
-/* eslint-disable import/named */
-import React from 'react'
+import React, { PureComponent } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import { AntDesign } from '@expo/vector-icons'
@@ -39,9 +38,16 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ({ navigation }) => (
-  <View style={styles.container}>
-    <TabNavigator />
-    <PlusIcon onPress={() => navigation.navigate('AddTransaction')} />
-  </View>
-)
+export default class TabNavigatorScreen extends PureComponent {
+  static router = TabNavigator.router
+
+  render() {
+    const { navigation } = this.props
+    return (
+      <View style={styles.container}>
+        <TabNavigator navigation={navigation} />
+        <PlusIcon onPress={() => navigation.navigate('AddTransaction')} />
+      </View>
+    )
+  }
+}

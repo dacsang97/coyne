@@ -1,14 +1,14 @@
 import { createStackNavigator } from 'react-navigation'
-import Test from '../screens/Test'
 import TabNavigator from './TabNavigator'
-import { AddTransaction } from '../screens'
+import { Test, AddTransaction } from '../screens'
 
 const MainNavigator = createStackNavigator(
   {
+    TabNavigator,
     Test: {
       screen: Test,
+      navigationOptions: {},
     },
-    TabNavigator,
     AddTransaction,
   },
   {

@@ -1,99 +1,97 @@
-import React, { PureComponent } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
-import Animated from 'react-native-reanimated'
-import { RectButton } from 'react-native-gesture-handler'
-import { BLACK } from '../constants/colors'
+import React from 'react'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import { Text } from '../components/atoms'
+import { BLACK_DARKER, BLACK } from '../constants/colors'
 
-const { event, Value, interpolate, Extrapolate, set, block, cond, call, greaterOrEq, lessOrEq } = Animated
+const WIDTH = Dimensions.get('window').width
+
+const SPACING = 10
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
+    backgroundColor: BLACK_DARKER,
+    padding: SPACING,
+  },
+  dateView: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+  },
+  date: {
+    fontSize: 26,
+  },
+  time: {
+    fontSize: 26,
+  },
+  saveMoney: {
+    flexDirection: 'row',
+    marginTop: 2 * SPACING,
+    justifyContent: 'space-between',
+  },
+  card: {
+    borderRadius: SPACING,
+    alignItems: 'flex-end',
+    padding: SPACING,
     backgroundColor: BLACK,
+    marginBottom: SPACING,
+  },
+  cardMoney: {
+    width: (WIDTH - SPACING * 3) / 2,
+  },
+  number: {
+    fontSize: 24,
+  },
+  pinnedContainer: {
+    marginTop: SPACING,
+    flex: 1,
+  },
+  pinned: {
+    fontSize: 13,
   },
 })
 
-class Home extends PureComponent {
-  gestureState = new Value(-1)
-
-  offset = new Value(0)
-
-  opacityTop = interpolate(this.offset, {
-    inputRange: [-80, 0],
-    outputRange: [1, 0],
-    extrapolate: Extrapolate.CLAMP,
-  })
-
-  opacityBottom = interpolate(this.offset, {
-    inputRange: [0, 80],
-    outputRange: [0, 1],
-    extrapolate: Extrapolate.CLAMP,
-  })
-
-  constructor(props) {
-    super(props)
-    this.handleScroll = event([
-      {
-        nativeEvent: ({ contentOffset: { y } }) =>
-          block([
-            cond(greaterOrEq(this.offset, 80), call([], this.navigateToIncome)),
-            cond(lessOrEq(this.offset, -80), call([], this.navigateToIncome)),
-            set(this.offset, y),
-          ]),
-      },
-    ])
-  }
-
-  navigateToIncome = () => {
-    const { navigation } = this.props
-    navigation.navigate('Test')
-  }
-
-  log = ([x]) => {
-    console.log(x)
-  }
-
-  render() {
-    const { navigation } = this.props
-    return (
-      // eslint-disable-next-line react/jsx-no-undef
-      <ScrollView style={styles.container} onScroll={this.handleScroll} scrollEventThrottle={16}>
-        <Text style={{ fontSize: 26 }} medium upper color="red">
-          Home Screen
+export default () => (
+  <View style={styles.screen}>
+    <View style={styles.dateView}>
+      <View>
+        <Text style={styles.date} medium>
+          Friday,
         </Text>
-        <RectButton
-          onPress={() => {
-            navigation.navigate('Test')
-          }}
-        >
-          <View>
-            <Ionicons name="ios-microphone" />
-            <Text weight="medium">Go to Test Screen</Text>
-          </View>
-        </RectButton>
-        <RectButton
-          onPress={() => {
-            navigation.navigate('HomePage')
-          }}
-        >
-          <View>
-            <Text weight="medium">Go to Home Page</Text>
-          </View>
-        </RectButton>
-        <RectButton
-          onPress={() => {
-            navigation.navigate('History')
-          }}
-        >
-          <View>
-            <Text weight="medium">Go to History Page</Text>
-          </View>
-        </RectButton>
-      </ScrollView>
-    )
-  }
-}
-
-export default Home
+      </View>
+      <View>
+        <Text style={styles.time} color="gray">
+          November 2
+        </Text>
+      </View>
+    </View>
+    <View style={styles.saveMoney}>
+      <View style={[styles.card, styles.cardMoney]}>
+        <Text style={styles.number}>$ 66888.66</Text>
+        <Text upper color="blue" medium>
+          Income
+        </Text>
+      </View>
+      <View style={[styles.card, styles.cardMoney]}>
+        <View>
+          <Text style={styles.number}>-$ 000.00</Text>
+        </View>
+        <View>
+          <Text upper color="red" medium>
+            Expense
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View style={styles.card}>
+      <Text style={styles.number}>$ 66888.66</Text>
+      <Text upper color="gray" medium>
+        Balance
+      </Text>
+    </View>
+    <View style={styles.pinnedContainer}>
+      <Text color="gray" medium>
+        PINNED
+      </Text>
+    </View>
+  </View>
+)

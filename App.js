@@ -13,8 +13,8 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: colors.BLACK_DARKER,
-    accent: colors.BLACK,
+    primary: colors.BLACK,
+    accent: colors.BLACK_DARKER,
     text: colors.WHITE,
     error: colors.RED,
     disabled: colors.GRAY,

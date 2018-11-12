@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'

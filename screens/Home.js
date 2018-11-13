@@ -1,7 +1,11 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { View, StyleSheet, Dimensions, ScrollView } from 'react-native'
+import { observer } from 'mobx-react'
 import { Text, Button } from '../components/atoms'
-import { BLACK_DARKER, BLACK } from '../constants/colors'
+import { Today, CardMoney } from '../components/monocules'
+import { BLACK_DARKER } from '../constants/colors'
+
+import store from '../store'
 
 const WIDTH = Dimensions.get('window').width
 
@@ -13,33 +17,13 @@ const styles = StyleSheet.create({
     backgroundColor: BLACK_DARKER,
     padding: SPACING,
   },
-  dateView: {
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-  },
-  date: {
-    fontSize: 26,
-  },
-  time: {
-    fontSize: 26,
-  },
   saveMoney: {
     flexDirection: 'row',
     marginTop: 2 * SPACING,
     justifyContent: 'space-between',
   },
-  card: {
-    borderRadius: SPACING,
-    alignItems: 'flex-end',
-    padding: SPACING,
-    backgroundColor: BLACK,
-    marginBottom: SPACING,
-  },
   cardMoney: {
     width: (WIDTH - SPACING * 3) / 2,
-  },
-  number: {
-    fontSize: 24,
   },
   pinnedContainer: {
     marginTop: SPACING,
@@ -53,8 +37,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 })
-
-export default class Home extends PureComponent {
+@observer
+class Home extends Component {
   navigate(screenName, props = {}) {
     const { navigation } = this.props
     navigation.navigate(screenName, {
@@ -63,44 +47,18 @@ export default class Home extends PureComponent {
   }
 
   render() {
+    const {
+      currentWallet: { income, expense, balance, unit },
+    } = store
+
     return (
       <ScrollView style={styles.screen}>
-        <View style={styles.dateView}>
-          <View>
-            <Text style={styles.date} medium>
-              Friday,
-            </Text>
-          </View>
-          <View>
-            <Text style={styles.time} color="gray">
-              November 2
-            </Text>
-          </View>
-        </View>
+        <Today />
         <View style={styles.saveMoney}>
-          <View style={[styles.card, styles.cardMoney]}>
-            <Text style={styles.number}>$ 66888.66</Text>
-            <Text upper color="blue" medium>
-              Income
-            </Text>
-          </View>
-          <View style={[styles.card, styles.cardMoney]}>
-            <View>
-              <Text style={styles.number}>-$ 000.00</Text>
-            </View>
-            <View>
-              <Text upper color="red" medium>
-                Expense
-              </Text>
-            </View>
-          </View>
+          <CardMoney style={styles.cardMoney} unit={unit} money={income.toString()} title="income" />
+          <CardMoney style={styles.cardMoney} unit={unit} money={expense.toString()} title="expense" />
         </View>
-        <View style={styles.card}>
-          <Text style={styles.number}>$ 66888.66</Text>
-          <Text upper color="gray" medium>
-            Balance
-          </Text>
-        </View>
+        <CardMoney unit={unit} money={balance.toString()} title="balance" />
         <View style={styles.pinnedContainer}>
           <Text color="gray" medium upper>
             Pinned
@@ -121,3 +79,5 @@ export default class Home extends PureComponent {
     )
   }
 }
+
+export default Home

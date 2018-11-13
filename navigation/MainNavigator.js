@@ -1,24 +1,25 @@
 import { createStackNavigator } from 'react-navigation'
-import Home from '../screens/Home'
-import Test from '../screens/Test'
 import AddSubMoney from '../screens/AddSubMoney'
+import TabNavigator from './TabNavigator'
+import { Test, AddTransaction } from '../screens'
 
-export default createStackNavigator(
+const MainNavigator = createStackNavigator(
   {
-    Home: {
-      screen: Home,
-      navigationOptions: {
-        title: 'Ahihi',
-      },
-    },
+    TabNavigator,
     Test: {
       screen: Test,
+      navigationOptions: {},
     },
     AddSubMoney: {
       screen: AddSubMoney,
     },
+    AddTransaction,
   },
   {
     headerMode: 'none',
+    mode: 'modal',
+    initialRouteName: 'TabNavigator',
   },
 )
+
+export default MainNavigator

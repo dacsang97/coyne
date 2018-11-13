@@ -1,90 +1,120 @@
 import React, { PureComponent } from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
-import Animated from 'react-native-reanimated'
-import { RectButton } from 'react-native-gesture-handler'
-import { BLACK } from '../constants/colors'
-import { Text } from '../components/atoms'
-import { Toast } from '../components/monocules'
+import { View, StyleSheet, Dimensions, ScrollView } from 'react-native'
+import { Text, Button } from '../components/atoms'
+import { BLACK_DARKER, BLACK } from '../constants/colors'
 
-const { event, Value, interpolate, Extrapolate, set, block, cond, call, greaterOrEq, lessOrEq } = Animated
+const WIDTH = Dimensions.get('window').width
+
+const SPACING = 10
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
+    backgroundColor: BLACK_DARKER,
+    padding: SPACING,
+  },
+  dateView: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+  },
+  date: {
+    fontSize: 26,
+  },
+  time: {
+    fontSize: 26,
+  },
+  saveMoney: {
+    flexDirection: 'row',
+    marginTop: 2 * SPACING,
+    justifyContent: 'space-between',
+  },
+  card: {
+    borderRadius: SPACING,
+    alignItems: 'flex-end',
+    padding: SPACING,
     backgroundColor: BLACK,
+    marginBottom: SPACING,
+  },
+  cardMoney: {
+    width: (WIDTH - SPACING * 3) / 2,
+  },
+  number: {
+    fontSize: 24,
+  },
+  pinnedContainer: {
+    marginTop: SPACING,
+    flex: 1,
+  },
+  testArea: {
+    marginTop: SPACING,
+    flex: 1,
+  },
+  pinned: {
+    fontSize: 13,
   },
 })
 
-class Home extends PureComponent {
-  gestureState = new Value(-1)
-
-  offset = new Value(0)
-
-  opacityTop = interpolate(this.offset, {
-    inputRange: [-80, 0],
-    outputRange: [1, 0],
-    extrapolate: Extrapolate.CLAMP,
-  })
-
-  opacityBottom = interpolate(this.offset, {
-    inputRange: [0, 80],
-    outputRange: [0, 1],
-    extrapolate: Extrapolate.CLAMP,
-  })
-
-  constructor(props) {
-    super(props)
-    this.handleScroll = event([
-      {
-        nativeEvent: ({ contentOffset: { y } }) =>
-          block([
-            cond(greaterOrEq(this.offset, 80), call([this.offset], this.navigateToIncome)),
-            cond(lessOrEq(this.offset, -80), call([this.offset], this.navigateToIncome)),
-            set(this.offset, y),
-          ]),
-      },
-    ])
-  }
-
-  navigateToIncome = offset => {
+export default class Home extends PureComponent {
+  navigate(screenName, props = {}) {
     const { navigation } = this.props
-    if (offset < -80) {
-      navigation.navigate('AddSubMoney', { isSub: false })
-    }
-    if (offset > 80) {
-      navigation.navigate('AddSubMoney', { isSub: true })
-    }
-  }
-
-  log = ([x]) => {
-    console.log(x)
+    navigation.navigate(screenName, {
+      ...props,
+    })
   }
 
   render() {
-    const { navigation } = this.props
     return (
-      <Animated.View style={styles.container}>
-        <Animated.ScrollView backgroundColor={BLACK} onScroll={this.handleScroll} scrollEventThrottle={16}>
-          <Animated.Text style={{ fontSize: this.sizeTop }} medium upper color="red">
-            Home Screen
-          </Animated.Text>
-          <RectButton
-            onPress={() => {
-              navigation.navigate('Test')
-            }}
-          >
+      <ScrollView style={styles.screen}>
+        <View style={styles.dateView}>
+          <View>
+            <Text style={styles.date} medium>
+              Friday,
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.time} color="gray">
+              November 2
+            </Text>
+          </View>
+        </View>
+        <View style={styles.saveMoney}>
+          <View style={[styles.card, styles.cardMoney]}>
+            <Text style={styles.number}>$ 66888.66</Text>
+            <Text upper color="blue" medium>
+              Income
+            </Text>
+          </View>
+          <View style={[styles.card, styles.cardMoney]}>
             <View>
-              <Ionicons name="ios-microphone" />
-              <Text weight="medium">Go to Test Screen</Text>
+              <Text style={styles.number}>-$ 000.00</Text>
             </View>
-          </RectButton>
-        </Animated.ScrollView>
-        <Toast position="top" style={{ opacity: this.opacityTop }} />
-        <Toast position="bottom" style={{ opacity: this.opacityBottom }} />
-      </Animated.View>
+            <View>
+              <Text upper color="red" medium>
+                Expense
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.number}>$ 66888.66</Text>
+          <Text upper color="gray" medium>
+            Balance
+          </Text>
+        </View>
+        <View style={styles.pinnedContainer}>
+          <Text color="gray" medium upper>
+            Pinned
+          </Text>
+        </View>
+        <View style={styles.testArea}>
+          <Text color="gray" medium upper>
+            Test area
+          </Text>
+          <Button onPress={() => this.navigate('Test')}>
+            <Text>Go to Test screen</Text>
+          </Button>
+        </View>
+      </ScrollView>
     )
   }
 }
-
-export default Home

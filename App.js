@@ -1,19 +1,29 @@
+/* eslint-disable import/no-named-as-default-member */
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import { useScreens } from 'react-native-screens'
+// eslint-disable-next-line import/no-named-as-default
 import MainNavigator from './navigation/MainNavigator'
+import { StatusBar } from './components/atoms'
+import * as colors from './constants/colors'
 
 useScreens()
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: colors.BLACK,
+    accent: colors.BLACK_DARKER,
+    text: colors.WHITE,
+    error: colors.RED,
+    disabled: colors.GRAY,
   },
-})
+}
 
 export default () => (
-  <View style={styles.container}>
+  <PaperProvider theme={theme}>
+    <StatusBar />
     <MainNavigator />
-  </View>
+  </PaperProvider>
 )

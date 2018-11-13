@@ -10,9 +10,7 @@ const MainNavigator = createStackNavigator(
       screen: Test,
       navigationOptions: {},
     },
-    AddSubMoney: {
-      screen: AddSubMoney,
-    },
+    AddSubMoney,
     AddTransaction,
   },
   {

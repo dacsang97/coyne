@@ -50,6 +50,10 @@ const styles = StyleSheet.create({
   moneyWrapper: {
     height: 54,
   },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   listWrapper: {
     flex: 1,
     marginTop: 10,
@@ -102,6 +106,7 @@ export default class AddSubMoney extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      isSub: true,
       money: 0,
       // eslint-disable-next-line
       savedMoney: 0,
@@ -124,10 +129,15 @@ export default class AddSubMoney extends Component {
       }))
       return
     }
-    this.setState(prev => ({
-      currentString:
-        sign === '<' ? prev.currentString.substring(0, prev.currentString.length - 1) : prev.currentString + sign,
-    }))
+    this.setState(prev => {
+      if (sign !== '<') {
+        return { currentString: prev.currentString + sign }
+      }
+      return {
+        currentString:
+          current.length > 0 ? prev.currentString.substring(0, prev.currentString.length - 1) : prev.currentString,
+      }
+    })
     if (operators.includes(sign)) {
       this.setState(prev => ({
         currentOperator: sign,
@@ -179,6 +189,10 @@ export default class AddSubMoney extends Component {
     }))
   }
 
+  onSelectTransaction(isSub) {
+    this.setState(() => ({ isSub }))
+  }
+
   disableButton(sign) {
     const { current } = this.state
     if (current === '' && (operators.includes(sign) || sign === '<' || sign === '0')) {
@@ -189,8 +203,7 @@ export default class AddSubMoney extends Component {
 
   render() {
     // eslint-disable-next-line
-    const { isSub } = this.props.navigation.state.params
-    const { money, currentString, category } = this.state
+    const { money, currentString, category, isSub } = this.state
     return (
       <View style={styles.container}>
         <View style={styles.moneyContainer}>
@@ -208,9 +221,19 @@ export default class AddSubMoney extends Component {
           </Text>
         </View>
         <View style={{ height: 150 }}>
-          <Button>
-            <Text color="gray">New Category</Text>
-          </Button>
+          <View style={styles.buttonRow}>
+            <Button>
+              <Text color="gray">New Category</Text>
+            </Button>
+            <View style={{ flexDirection: 'row' }}>
+              <Button onPress={() => this.onSelectTransaction(false)} style={{ marginRight: 8 }}>
+                <Text color={isSub ? 'gray' : 'blue'}>Income</Text>
+              </Button>
+              <Button onPress={() => this.onSelectTransaction(true)}>
+                <Text color={isSub ? 'blue' : 'gray'}>Outcome</Text>
+              </Button>
+            </View>
+          </View>
           <View style={styles.listWrapper}>
             <ScrollView style={styles.listCategory} horizontal>
               {categoryList.map(cat => (

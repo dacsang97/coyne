@@ -113,6 +113,9 @@ export default class Home extends PureComponent {
           <Button onPress={() => this.navigate('Test')}>
             <Text>Go to Test screen</Text>
           </Button>
+          <Button onPress={() => this.navigate('AddSubMoney')}>
+            <Text>Go to Add-Sub Money screen</Text>
+          </Button>
         </View>
       </ScrollView>
     )

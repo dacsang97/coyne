@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet, Alert } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
+import PropTypes from 'prop-types'
 import { LongPressGestureHandler, State } from 'react-native-gesture-handler'
 import { Button } from '../atoms'
 import { BLUE } from '../../constants/colors'
@@ -27,17 +28,24 @@ const styles = StyleSheet.create({
   },
 })
 
-export default props => (
+const PlusIcon = ({ onPress, onLongPress }) => (
   <LongPressGestureHandler
-    minDurationMs={800}
+    minDurationMs={400}
     onHandlerStateChange={({ nativeEvent }) => {
       if (nativeEvent.state === State.ACTIVE) {
-        Alert.alert("I'm being pressed for so long")
+        onLongPress()
       }
     }}
   >
-    <Button style={styles.icon} {...props}>
+    <Button style={styles.icon} onPress={onPress}>
       <AntDesign name="plus" color="#fff" size={32} />
     </Button>
   </LongPressGestureHandler>
 )
+
+PlusIcon.propTypes = {
+  onPress: PropTypes.func.isRequired,
+  onLongPress: PropTypes.func.isRequired,
+}
+
+export default PlusIcon

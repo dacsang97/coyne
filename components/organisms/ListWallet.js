@@ -4,7 +4,7 @@ import { FlatList, Dimensions, StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
 import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
-import { Card } from '../atoms'
+import { Card, Button } from '../atoms'
 import { CardWallet } from '../monocules'
 import store from '../../store'
 import { SPACING } from '../../constants/unit'
@@ -60,11 +60,13 @@ class ListWallet extends Component {
 
   render() {
     const { wallets } = store
-
+    const { onAddPress } = this.props
     return (
       <Wrapper>
         <AddWalletWrapper>
-          <AntDesign name="plus" color="#fff" size={30} />
+          <Button onPress={onAddPress}>
+            <AntDesign name="plus" color="#fff" size={30} />
+          </Button>
         </AddWalletWrapper>
         <FlatList
           style={styles.flatlist}
@@ -80,6 +82,7 @@ class ListWallet extends Component {
 
 ListWallet.propTypes = {
   onWalletPress: PropTypes.func.isRequired,
+  onAddPress: PropTypes.func.isRequired,
 }
 
 export default ListWallet

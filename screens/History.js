@@ -1,12 +1,13 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react'
 import { TextInput, View, StyleSheet, FlatList } from 'react-native'
-import Emoji from 'react-native-emoji'
 import { observer } from 'mobx-react'
 import { Text } from '../components/atoms'
 import { BLACK_DARKER, BLACK } from '../constants/colors'
 import store from '../store'
 import { getDayOfWeek, getDay } from '../utils/date'
+import { CardHistory } from '../components/monocules'
 
 const SPACING = 10
 
@@ -105,27 +106,7 @@ class History extends Component {
           data={transactions}
           keyExtractor={this.keyExtractor}
           renderItem={({ item }) => (
-            <View>
-              <View style={styles.cash}>
-                <View style={styles.icon}>
-                  <Emoji name={item.icon} style={{ fontSize: 30 }} />
-                </View>
-                <View style={styles.childCash}>
-                  <Text style={styles.money}>
-                    {unit} {item.type === 'expense' && '-'}
-                    {item.money}
-                  </Text>
-                  <Text color="gray" upper medium>
-                    {item.note}
-                  </Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.date} medium color="gray">
-                  {weekDay}, {day}, 2018
-                </Text>
-              </View>
-            </View>
+            <CardHistory unit={unit} note={item.note} type={item.type} icon={item.icon} money={item.money} />
           )}
         />
       </View>

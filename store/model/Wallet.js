@@ -3,8 +3,10 @@ import Transaction from './Transaction'
 
 const Wallet = types
   .model({
+    id: types.identifier,
     name: types.string,
     unit: types.string,
+    color: types.enumeration(['black', 'blue', 'green', 'yellow', 'orange', 'red']),
     transactions: types.optional(types.array(Transaction), []),
   })
   .views(self => ({

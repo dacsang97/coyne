@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
+import { SPACING } from '../constants/unit'
+
+const styles = StyleSheet.create({
+  screen: {
+    padding: SPACING,
+  },
+})
 
 export default class Test extends PureComponent {
-  constructor(props) {
-    super(props)
-    console.log('Ahihi')
-  }
-
   back = () => {
     const { navigation } = this.props
     navigation.navigate('Home')
@@ -15,7 +17,7 @@ export default class Test extends PureComponent {
 
   render() {
     return (
-      <View>
+      <View style={styles.screen}>
         <Text>Test Screen</Text>
         <RectButton onPress={this.back}>
           <Text>Back</Text>

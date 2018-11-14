@@ -11,7 +11,8 @@ const weights = {
 const TextWrapper = styled.Text`
   color: ${withProp(prop('color', 'white'), color => colors[color.toUpperCase()])};
   font-weight: ${ifProp('medium', weights.medium, weights.light)};
-  text-transform: ${ifProp('upper', 'uppercase', 'none')};
 `
 
-export default ({ children, ...props }) => <TextWrapper {...props}>{children}</TextWrapper>
+export default ({ children, upper, ...props }) => (
+  <TextWrapper {...props}>{upper ? children.toUpperCase() : children}</TextWrapper>
+)

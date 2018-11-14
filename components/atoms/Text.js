@@ -24,4 +24,6 @@ const TextWrapper = styled.Text`
   )}
 `
 
-export default ({ children, ...props }) => <TextWrapper {...props}>{children}</TextWrapper>
+export default ({ children, upper, ...props }) => (
+  <TextWrapper {...props}>{upper ? children.toUpperCase() : children}</TextWrapper>
+)

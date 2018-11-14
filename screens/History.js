@@ -1,8 +1,12 @@
-import React from 'react'
-import { Ionicons } from '@expo/vector-icons'
-import { TextInput, View, StyleSheet } from 'react-native'
+/* eslint-disable react/prefer-stateless-function */
+import React, { Component } from 'react'
+import { TextInput, View, StyleSheet, FlatList } from 'react-native'
+import Emoji from 'react-native-emoji'
+import { observer } from 'mobx-react'
 import { Text } from '../components/atoms'
 import { BLACK_DARKER, BLACK } from '../constants/colors'
+import store from '../store'
+import { getDayOfWeek, getDay } from '../utils/date'
 
 const SPACING = 10
 
@@ -52,47 +56,80 @@ const styles = StyleSheet.create({
     marginTop: SPACING / 2,
   },
 })
-export default () => (
-  <View style={styles.screen}>
-    <TextInput
-      style={styles.searchInput}
-      placeholderTextColor="#9e9e9e"
-      placeholder="e.g .."
-      onChangeText={text => console.log(text)}
-    />
-    <View style={styles.checkHistory}>
-      <View style={styles.leftHistory}>
-        <Text color="blue" medium>
-          $ 66888.66
-        </Text>
-        <Text color="red" medium>
-          -$ 0.00
-        </Text>
+@observer
+class History extends Component {
+  keyExtractor = item => `${item.id}`
+
+  navigate(screenName, props = {}) {
+    const { navigation } = this.props
+    navigation.navigate(screenName, {
+      ...props,
+    })
+  }
+
+  render() {
+    const weekDay = getDayOfWeek()
+    const day = getDay()
+    const {
+      currentWallet: { income, expense, unit, transactions },
+    } = store
+    return (
+      <View style={styles.screen}>
+        <TextInput
+          style={styles.searchInput}
+          placeholderTextColor="#9e9e9e"
+          placeholder="e.g .."
+          onChangeText={text => console.log(text)}
+        />
+        <View style={styles.checkHistory}>
+          <View style={styles.leftHistory}>
+            <Text color="blue" medium>
+              {unit}
+              {income.toString()}
+            </Text>
+            <Text color="red" medium>
+              - {unit}
+              {expense.toString()}
+            </Text>
+          </View>
+          <View style={styles.rightHistory}>
+            <Text color="white" medium>
+              {weekDay}
+            </Text>
+            <Text color="gray" medium>
+              {day}
+            </Text>
+          </View>
+        </View>
+        <FlatList
+          data={transactions}
+          keyExtractor={this.keyExtractor}
+          renderItem={({ item }) => (
+            <View>
+              <View style={styles.cash}>
+                <View style={styles.icon}>
+                  <Emoji name={item.icon} style={{ fontSize: 30 }} />
+                </View>
+                <View style={styles.childCash}>
+                  <Text style={styles.money}>
+                    {unit} {item.type === 'expense' && '-'}
+                    {item.money}
+                  </Text>
+                  <Text color="gray" upper medium>
+                    {item.note}
+                  </Text>
+                </View>
+              </View>
+              <View>
+                <Text style={styles.date} medium color="gray">
+                  {weekDay}, {day}, 2018
+                </Text>
+              </View>
+            </View>
+          )}
+        />
       </View>
-      <View style={styles.rightHistory}>
-        <Text color="white" medium>
-          NOVEMBER
-        </Text>
-        <Text color="gray" medium>
-          2018
-        </Text>
-      </View>
-    </View>
-    <View style={styles.cash}>
-      <View style={styles.icon}>
-        <Ionicons name="md-search" size={32} color="#9e9e9e" />
-      </View>
-      <View style={styles.childCash}>
-        <Text style={styles.money}>$ 66888.666</Text>
-        <Text color="gray" upper medium>
-          Cash
-        </Text>
-      </View>
-    </View>
-    <View>
-      <Text style={styles.date} medium color="gray">
-        Saturday, November 3, 2018
-      </Text>
-    </View>
-  </View>
-)
+    )
+  }
+}
+export default History

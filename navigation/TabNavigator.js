@@ -1,12 +1,14 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import { AntDesign } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
+import { observer } from 'mobx-react'
 import { Home, History, AddTransaction } from '../screens'
 import { PlusIcon } from '../components/monocules'
-import { ListAccount } from '../components/organisms'
+import { ListWallet } from '../components/organisms'
 import { SPACING } from '../constants/unit'
+import store from '../store'
 
 const TabNavigator = createMaterialBottomTabNavigator(
   {
@@ -41,42 +43,50 @@ const styles = StyleSheet.create({
   },
 })
 
-export default class TabNavigatorScreen extends PureComponent {
+@observer
+class TabNavigatorScreen extends Component {
   static router = TabNavigator.router
 
   state = {
-    chooseAccount: false,
+    chooseWallet: false,
   }
 
-  hideChooseAccount = () => {
+  hideChooseWallet = () => {
     this.setState({
-      chooseAccount: false,
+      chooseWallet: false,
     })
   }
 
-  showChooseAccount = () => {
+  showChooseWallet = () => {
     this.setState({
-      chooseAccount: true,
+      chooseWallet: true,
     })
+  }
+
+  walletClicked = id => {
+    store.changeCurrentWallet(id)
+    this.hideChooseWallet()
   }
 
   render() {
     const { navigation } = this.props
-    const { chooseAccount } = this.state
+    const { chooseWallet } = this.state
     return (
       <View style={styles.container}>
         <TabNavigator navigation={navigation} />
         <Modal
           useNativeDriver
-          isVisible={chooseAccount}
-          onBackButtonPress={this.hideChooseAccount}
-          onBackdropPress={this.hideChooseAccount}
+          isVisible={chooseWallet}
+          onBackButtonPress={this.hideChooseWallet}
+          onBackdropPress={this.hideChooseWallet}
           style={{ margin: 0, padding: SPACING, justifyContent: 'flex-end' }}
         >
-          <ListAccount />
+          <ListWallet onWalletPress={this.walletClicked} />
         </Modal>
-        <PlusIcon onLongPress={this.showChooseAccount} onPress={() => navigation.navigate('AddTransaction')} />
+        <PlusIcon onLongPress={this.showChooseWallet} onPress={() => navigation.navigate('AddTransaction')} />
       </View>
     )
   }
 }
+
+export default TabNavigatorScreen

@@ -1,1 +1,1 @@
-export { default as ListAccount } from './ListAccount'
+export { default as ListWallet } from './ListWallet'

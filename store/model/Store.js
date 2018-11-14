@@ -12,7 +12,7 @@ const Store = types
     },
   }))
   .actions(self => ({
-    changeAccount(id) {
+    changeCurrentWallet(id) {
       self.current = id
     },
   }))

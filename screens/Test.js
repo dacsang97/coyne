@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
-import { ListAccount } from '../components/organisms'
 import { SPACING } from '../constants/unit'
 
 const styles = StyleSheet.create({
@@ -23,7 +22,6 @@ export default class Test extends PureComponent {
         <RectButton onPress={this.back}>
           <Text>Back</Text>
         </RectButton>
-        <ListAccount />
       </View>
     )
   }

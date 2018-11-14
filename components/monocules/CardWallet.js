@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
-import { Card, Text } from '../atoms'
+import { Card, Text, Button } from '../atoms'
 import { CARD_COLORS } from '../../constants/colors'
 import { SPACING } from '../../constants/unit'
 
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   money: {
-    fontSize: 24,
+    fontSize: 22,
   },
   active: {
     position: 'absolute',
@@ -31,24 +31,26 @@ const styles = StyleSheet.create({
   },
 })
 
-const CardAccount = ({ width, height, amount, name, unit, color, active }) => (
-  <Card
-    style={[
-      styles.wrapper,
-      { backgroundColor: CARD_COLORS[color], marginBottom: 0, marginRight: SPACING / 2, height, width },
-    ]}
-  >
-    {active && <View style={styles.active} />}
-    <Text style={styles.money}>
-      <Text style={styles.unit}>{unit}</Text> <Text>{amount}</Text>
-    </Text>
-    <Text style={styles.name} upper>
-      {name}
-    </Text>
-  </Card>
+const CardWallet = ({ width, height, amount, name, unit, color, active, onPress }) => (
+  <Button onPress={onPress}>
+    <Card
+      style={[
+        styles.wrapper,
+        { backgroundColor: CARD_COLORS[color], marginBottom: 0, marginRight: SPACING / 2, height, width },
+      ]}
+    >
+      {active && <View style={styles.active} />}
+      <Text style={styles.money}>
+        <Text style={styles.unit}>{unit}</Text> <Text>{amount}</Text>
+      </Text>
+      <Text style={styles.name} upper>
+        {name}
+      </Text>
+    </Card>
+  </Button>
 )
 
-CardAccount.propTypes = {
+CardWallet.propTypes = {
   amount: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   unit: PropTypes.string.isRequired,
@@ -56,6 +58,7 @@ CardAccount.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   active: PropTypes.bool.isRequired,
+  onPress: PropTypes.func.isRequired,
 }
 
-export default CardAccount
+export default CardWallet

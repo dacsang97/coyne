@@ -1,15 +1,13 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import { FlatList, Dimensions, StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
 import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
 import { Card } from '../atoms'
-import { CardAccount } from '../monocules'
+import { CardWallet } from '../monocules'
 import store from '../../store'
 import { SPACING } from '../../constants/unit'
-import { modelOf } from '../../utils/mst'
-import Wallet from '../../store/model/Wallet'
 
 const { width: DeviceWidth } = Dimensions.get('window')
 
@@ -24,7 +22,7 @@ const Wrapper = styled(Card)`
   overflow: hidden;
 `
 
-const AddAccountWrapper = styled.View`
+const AddWalletWrapper = styled.View`
   align-items: center;
   justify-content: center;
   height: ${HEIGHT}px;
@@ -38,13 +36,16 @@ const styles = StyleSheet.create({
   },
 })
 
-export default observer(() => {
-  const { wallets, current } = store
-  const keyExtractor = item => item.id
-  const renderItem = ({ item, index }) => {
+@observer
+class ListWallet extends Component {
+  keyExtractor = item => item.id
+
+  renderItem = ({ item, index }) => {
+    const { current } = store
     const width = (DeviceWidth - WIDTH - SPACING * 3) / 2
+    const { onWalletPress } = this.props
     return (
-      <CardAccount
+      <CardWallet
         width={width}
         height={HEIGHT}
         amount={item.balance}
@@ -52,19 +53,33 @@ export default observer(() => {
         name={item.name}
         color={item.color}
         active={index === current}
+        onPress={() => onWalletPress(index)}
       />
     )
   }
-  renderItem.propTypes = {
-    item: modelOf(Wallet).isRequired,
-    index: PropTypes.number.isRequired,
+
+  render() {
+    const { wallets } = store
+
+    return (
+      <Wrapper>
+        <AddWalletWrapper>
+          <AntDesign name="plus" color="#fff" size={30} />
+        </AddWalletWrapper>
+        <FlatList
+          style={styles.flatlist}
+          data={wallets}
+          keyExtractor={this.keyExtractor}
+          horizontal
+          renderItem={this.renderItem}
+        />
+      </Wrapper>
+    )
   }
-  return (
-    <Wrapper>
-      <AddAccountWrapper>
-        <AntDesign name="plus" color="#fff" size={30} />
-      </AddAccountWrapper>
-      <FlatList style={styles.flatlist} data={wallets} keyExtractor={keyExtractor} horizontal renderItem={renderItem} />
-    </Wrapper>
-  )
-})
+}
+
+ListWallet.propTypes = {
+  onWalletPress: PropTypes.func.isRequired,
+}
+
+export default ListWallet

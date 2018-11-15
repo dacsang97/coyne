@@ -3,10 +3,11 @@ import { View, StyleSheet } from 'react-native'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import { AntDesign } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
+import { Portal } from 'react-native-paper'
 import { observer } from 'mobx-react'
 import { Home, History, AddTransaction } from '../screens'
 import { PlusIcon } from '../components/monocules'
-import { ListWallet } from '../components/organisms'
+import { ListWallet, AddWallet } from '../components/organisms'
 import { SPACING } from '../constants/unit'
 import store from '../store'
 
@@ -48,18 +49,26 @@ class TabNavigatorScreen extends Component {
   static router = TabNavigator.router
 
   state = {
+    showModal: false,
     chooseWallet: false,
   }
 
   hideChooseWallet = () => {
     this.setState({
-      chooseWallet: false,
+      showModal: false,
     })
   }
 
   showChooseWallet = () => {
     this.setState({
+      showModal: true,
       chooseWallet: true,
+    })
+  }
+
+  showAddWallet = () => {
+    this.setState({
+      chooseWallet: false,
     })
   }
 
@@ -70,19 +79,26 @@ class TabNavigatorScreen extends Component {
 
   render() {
     const { navigation } = this.props
-    const { chooseWallet } = this.state
+    const { chooseWallet, showModal } = this.state
     return (
       <View style={styles.container}>
         <TabNavigator navigation={navigation} />
-        <Modal
-          useNativeDriver
-          isVisible={chooseWallet}
-          onBackButtonPress={this.hideChooseWallet}
-          onBackdropPress={this.hideChooseWallet}
-          style={{ margin: 0, padding: SPACING, justifyContent: 'flex-end' }}
-        >
-          <ListWallet onWalletPress={this.walletClicked} />
-        </Modal>
+        <Portal>
+          <Modal
+            useNativeDriver
+            animationOut={chooseWallet ? 'slideOutDown' : 'slideOutUp'}
+            isVisible={showModal}
+            onBackButtonPress={this.hideChooseWallet}
+            onBackdropPress={this.hideChooseWallet}
+            style={{ margin: 0, padding: SPACING, justifyContent: chooseWallet ? 'flex-end' : 'flex-start' }}
+          >
+            {chooseWallet ? (
+              <ListWallet onWalletPress={this.walletClicked} onAddPress={this.showAddWallet} />
+            ) : (
+              <AddWallet />
+            )}
+          </Modal>
+        </Portal>
         <PlusIcon onLongPress={this.showChooseWallet} onPress={() => navigation.navigate('AddTransaction')} />
       </View>
     )

@@ -1,9 +1,8 @@
-import React from 'react'
-import { StyleSheet } from 'react-native'
+import React, { PureComponent } from 'react'
+import { StyleSheet, View } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import PropTypes from 'prop-types'
-import { LongPressGestureHandler, State } from 'react-native-gesture-handler'
-import { Button } from '../atoms'
+import { TapGestureHandler, State } from 'react-native-gesture-handler'
 import { BLUE } from '../../constants/colors'
 
 const SIZE = 70
@@ -28,20 +27,35 @@ const styles = StyleSheet.create({
   },
 })
 
-const PlusIcon = ({ onPress, onLongPress }) => (
-  <LongPressGestureHandler
-    minDurationMs={400}
-    onHandlerStateChange={({ nativeEvent }) => {
-      if (nativeEvent.state === State.ACTIVE) {
-        onLongPress()
-      }
-    }}
-  >
-    <Button style={styles.icon} onPress={onPress}>
-      <AntDesign name="plus" color="#fff" size={32} />
-    </Button>
-  </LongPressGestureHandler>
-)
+class PlusIcon extends PureComponent {
+  doubleTapRef = React.createRef()
+
+  onSingleTap = event => {
+    const { onPress } = this.props
+    if (event.nativeEvent.state === State.ACTIVE) {
+      onPress()
+    }
+  }
+
+  onDoubleTap = event => {
+    const { onLongPress } = this.props
+    if (event.nativeEvent.state === State.ACTIVE) {
+      onLongPress()
+    }
+  }
+
+  render() {
+    return (
+      <TapGestureHandler onHandlerStateChange={this.onSingleTap} waitFor={this.doubleTapRef}>
+        <TapGestureHandler ref={this.doubleTapRef} onHandlerStateChange={this.onDoubleTap} numberOfTaps={2}>
+          <View style={styles.icon}>
+            <AntDesign name="plus" color="#fff" size={32} />
+          </View>
+        </TapGestureHandler>
+      </TapGestureHandler>
+    )
+  }
+}
 
 PlusIcon.propTypes = {
   onPress: PropTypes.func.isRequired,

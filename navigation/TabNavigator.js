@@ -86,16 +86,21 @@ class TabNavigatorScreen extends Component {
         <Portal>
           <Modal
             useNativeDriver
-            animationOut={chooseWallet ? 'slideOutDown' : 'slideOutUp'}
+            animationOut={chooseWallet ? 'slideOutDown' : 'fadeOut'}
             isVisible={showModal}
             onBackButtonPress={this.hideChooseWallet}
             onBackdropPress={this.hideChooseWallet}
-            style={{ margin: 0, padding: SPACING, justifyContent: chooseWallet ? 'flex-end' : 'flex-start' }}
+            style={{
+              margin: 0,
+              padding: SPACING,
+              position: 'relative',
+              justifyContent: chooseWallet ? 'flex-end' : 'space-between',
+            }}
           >
             {chooseWallet ? (
               <ListWallet onWalletPress={this.walletClicked} onAddPress={this.showAddWallet} />
             ) : (
-              <AddWallet />
+              <AddWallet hideModal={this.hideChooseWallet} />
             )}
           </Modal>
         </Portal>

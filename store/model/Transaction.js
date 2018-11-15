@@ -1,6 +1,7 @@
 import { types } from 'mobx-state-tree'
 
 const Transaction = types.model({
+  id: types.number,
   icon: types.optional(types.string, ''),
   category: types.optional(types.string, ''),
   type: types.enumeration(['income', 'expense']),

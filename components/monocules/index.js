@@ -10,3 +10,5 @@ export { default as CardColorButton } from './CardColorButton'
 export { default as Today } from './Today'
 
 export { default as CardMoney } from './CardMoney'
+
+export { default as CardHistory } from './CardHistory'

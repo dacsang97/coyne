@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
+import { TouchableRipple } from 'react-native-paper'
 import { observer } from 'mobx-react'
 import Emoji from 'react-native-emoji'
-import { Button, Text } from '../components/atoms'
+import { Text } from '../components/atoms'
 import * as colors from '../constants/colors'
 
 import store from '../store'
@@ -121,7 +122,7 @@ class AddSubMoney extends Component {
   }
 
   onButtonPress(sign) {
-    const { current, currentOperator } = this.state
+    const { current, currentOperator, currentString } = this.state
     if (sign === 'C') {
       this.setState(() => ({
         money: 0,
@@ -154,6 +155,11 @@ class AddSubMoney extends Component {
       const currentMoney = sign === '<' ? current.substring(0, current.length - 1) : current + sign
       // break if current is empty
       if (currentMoney === '') {
+        if (currentString === '') {
+          this.setState(() => ({
+            money: 0,
+          }))
+        }
         return
       }
       // if current is not empty, execute operator
@@ -237,31 +243,33 @@ class AddSubMoney extends Component {
         </View>
         <View style={{ height: 140 }}>
           <View style={styles.buttonRow}>
-            <Button>
+            <TouchableRipple>
               <Text color="gray">New Category</Text>
-            </Button>
+            </TouchableRipple>
             <View style={{ flexDirection: 'row' }}>
-              <Button onPress={() => this.onSelectTransaction('income')} style={{ marginRight: 8 }}>
+              <TouchableRipple onPress={() => this.onSelectTransaction('income')} style={{ marginRight: 8 }}>
                 <Text color={type === 'income' ? 'blue' : 'gray'}>Income</Text>
-              </Button>
-              <Button onPress={() => this.onSelectTransaction('expense')}>
+              </TouchableRipple>
+              <TouchableRipple onPress={() => this.onSelectTransaction('expense')}>
                 <Text color={type === 'expense' ? 'blue' : 'gray'}>Expense</Text>
-              </Button>
+              </TouchableRipple>
             </View>
           </View>
           <View style={styles.listWrapper}>
             <ScrollView style={styles.listCategory} horizontal>
               {categoryList.map(cat => (
-                <Button
+                <TouchableRipple
                   onPress={() => this.onSelectCategory(cat)}
                   key={`category_${cat.category}`}
                   style={[styles.category, cat.category === category && styles.selected]}
                 >
-                  <Emoji name={cat.icon} style={{ fontSize: 24 }} />
-                  <Text color="gray" size="18">
-                    {cat.category}
-                  </Text>
-                </Button>
+                  <View>
+                    <Emoji name={cat.icon} style={{ fontSize: 24 }} />
+                    <Text color="gray" size="18">
+                      {cat.category}
+                    </Text>
+                  </View>
+                </TouchableRipple>
               ))}
             </ScrollView>
           </View>
@@ -270,7 +278,7 @@ class AddSubMoney extends Component {
           {buttonList.map(row => (
             <View key={`button_${row}`} style={styles.row}>
               {row.map(sign => (
-                <Button
+                <TouchableRipple
                   onPress={() => this.onButtonPress(sign)}
                   disabled={this.disableButton(sign)}
                   key={`button_${sign}`}
@@ -288,17 +296,17 @@ class AddSubMoney extends Component {
                   >
                     {sign}
                   </Text>
-                </Button>
+                </TouchableRipple>
               ))}
             </View>
           ))}
         </View>
         <View style={{ alignItems: 'center' }}>
-          <Button onPress={() => this.addTransaction()}>
+          <TouchableRipple onPress={() => this.addTransaction()}>
             <Text size={18} color="blue">
               ADD TRANSACTION
             </Text>
-          </Button>
+          </TouchableRipple>
         </View>
       </View>
     )

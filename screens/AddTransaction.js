@@ -94,9 +94,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 24,
   },
-  buttonText: {
-    fontFamily: 'Helvetica Neue',
-  },
   disabled: {
     color: colors.GRAY,
   },
@@ -114,15 +111,15 @@ class AddSubMoney extends Component {
       money: 0,
       // eslint-disable-next-line
       savedMoney: 0,
-      current: '',
-      currentString: '',
+      current: '', // string of current number
+      currentString: '', // full current string with operater
       currentOperator: '',
       category: '',
     }
   }
 
   onButtonPress(sign) {
-    const { current, currentOperator, currentString } = this.state
+    const { current, currentOperator, currentString, savedMoney } = this.state
     if (sign === 'C') {
       this.setState(() => ({
         money: 0,
@@ -155,9 +152,15 @@ class AddSubMoney extends Component {
       const currentMoney = sign === '<' ? current.substring(0, current.length - 1) : current + sign
       // break if current is empty
       if (currentMoney === '') {
-        if (currentString === '') {
+        // not have an operator yet, money is current string convert to number, current = ''
+        if (currentString.length === 1) {
           this.setState(() => ({
             money: 0,
+          }))
+        } else {
+          // had some operator, current = ''
+          this.setState(() => ({
+            money: savedMoney,
           }))
         }
         return

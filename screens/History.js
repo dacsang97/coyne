@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-duplicate-props */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react'
 import { TextInput, View, StyleSheet, FlatList } from 'react-native'
 import { observer } from 'mobx-react'

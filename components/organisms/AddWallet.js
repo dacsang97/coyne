@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native'
 import { Constants } from 'expo'
 import { observer } from 'mobx-react'
 import { AntDesign } from '@expo/vector-icons'
+import shortid from 'shortid'
 import { Text, Input, Button } from '../atoms'
 import { SPACING } from '../../constants/unit'
 import { CARD_COLORS, BLACK } from '../../constants/colors'
@@ -47,6 +48,7 @@ const styles = StyleSheet.create({
 class AddWallet extends Component {
   state = {
     wallet: Wallet.create({
+      id: shortid.generate(),
       name: '',
       unit: 'đ',
     }),
@@ -60,6 +62,12 @@ class AddWallet extends Component {
   onChangeName = name => {
     const { wallet } = this.state
     wallet.setName(name)
+  }
+
+  onChangeUnit = () => {
+    const { wallet } = this.state
+    const { unit } = wallet
+    wallet.setUnit(unit === '$' ? 'đ' : '$')
   }
 
   onBackPress = () => {
@@ -94,12 +102,7 @@ class AddWallet extends Component {
                 />
               ))}
             </View>
-            <CardColorButton
-              color="blue"
-              onPress={() => {
-                console.log('hihi')
-              }}
-            >
+            <CardColorButton color="blue" onPress={this.onChangeUnit}>
               <Text medium>{wallet.unit}</Text>
             </CardColorButton>
           </View>

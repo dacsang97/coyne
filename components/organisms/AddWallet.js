@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { View, StyleSheet } from 'react-native'
 import { Constants } from 'expo'
 import { observer } from 'mobx-react'
 import { AntDesign } from '@expo/vector-icons'
-import { Text, Input } from '../atoms'
+import { Text, Input, Button } from '../atoms'
 import { SPACING } from '../../constants/unit'
 import { CARD_COLORS, BLACK } from '../../constants/colors'
 import { CardColorButton } from '../monocules'
 import Wallet from '../../store/model/Wallet'
+import store from '../../store'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -28,9 +30,16 @@ const styles = StyleSheet.create({
     height: 50,
     marginLeft: -SPACING,
     marginRight: -SPACING,
+    marginBottom: -SPACING,
     backgroundColor: BLACK,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+  },
+  button: {
+    flex: 1,
+    padding: SPACING,
+  },
+  next: {
+    alignItems: 'flex-end',
   },
 })
 
@@ -51,6 +60,19 @@ class AddWallet extends Component {
   onChangeName = name => {
     const { wallet } = this.state
     wallet.setName(name)
+  }
+
+  onBackPress = () => {
+    const { hideModal } = this.props
+    hideModal()
+  }
+
+  onNextPress = () => {
+    const { hideModal } = this.props
+    const { wallet } = this.state
+    const { addWallet } = store
+    addWallet(wallet)
+    hideModal()
   }
 
   render() {
@@ -83,11 +105,20 @@ class AddWallet extends Component {
           </View>
         </View>
         <View style={styles.bottomBar}>
-          <AntDesign name="plus" />
+          <Button style={[styles.button]} onPress={this.onBackPress}>
+            <AntDesign name="plus" color="white" size={30} />
+          </Button>
+          <Button style={[styles.button, styles.next]} onPress={this.onNextPress}>
+            <AntDesign name="arrowright" color="white" size={30} />
+          </Button>
         </View>
       </View>
     )
   }
+}
+
+AddWallet.propTypes = {
+  hideModal: PropTypes.func.isRequired,
 }
 
 export default AddWallet

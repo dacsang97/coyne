@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import { AntDesign } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
@@ -86,7 +86,7 @@ class TabNavigatorScreen extends Component {
         <Portal>
           <Modal
             useNativeDriver
-            animationOut={chooseWallet ? 'slideOutDown' : 'slideOutUp'}
+            animationOut={chooseWallet ? 'slideOutDown' : 'fadeOut'}
             isVisible={showModal}
             onBackButtonPress={this.hideChooseWallet}
             onBackdropPress={this.hideChooseWallet}
@@ -94,19 +94,14 @@ class TabNavigatorScreen extends Component {
               margin: 0,
               padding: SPACING,
               position: 'relative',
+              justifyContent: chooseWallet ? 'flex-end' : 'space-between',
             }}
           >
-            <KeyboardAvoidingView
-              style={{ flex: 1, justifyContent: chooseWallet ? 'flex-end' : 'space-between' }}
-              behavior="padding"
-              enabled
-            >
-              {chooseWallet ? (
-                <ListWallet onWalletPress={this.walletClicked} onAddPress={this.showAddWallet} />
-              ) : (
-                <AddWallet />
-              )}
-            </KeyboardAvoidingView>
+            {chooseWallet ? (
+              <ListWallet onWalletPress={this.walletClicked} onAddPress={this.showAddWallet} />
+            ) : (
+              <AddWallet hideModal={this.hideChooseWallet} />
+            )}
           </Modal>
         </Portal>
         <PlusIcon onLongPress={this.showChooseWallet} onPress={() => navigation.navigate('AddTransaction')} />

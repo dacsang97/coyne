@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import { FlatList, Dimensions, StyleSheet } from 'react-native'
+import { TouchableRipple } from 'react-native-paper'
 import styled from 'styled-components/native'
 import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
-import { Card, Button } from '../atoms'
+import { Card } from '../atoms'
 import { CardWallet } from '../monocules'
 import store from '../../store'
 import { SPACING } from '../../constants/unit'
@@ -67,9 +68,9 @@ class ListWallet extends Component {
     return (
       <Wrapper>
         <AddWalletWrapper>
-          <Button style={styles.addBtn} onPress={onAddPress}>
+          <TouchableRipple style={styles.addBtn} onPress={onAddPress}>
             <AntDesign name="plus" color="#fff" size={30} />
-          </Button>
+          </TouchableRipple>
         </AddWalletWrapper>
         <FlatList
           style={styles.flatlist}

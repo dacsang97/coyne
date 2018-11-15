@@ -23,8 +23,6 @@ const Wrapper = styled(Card)`
 `
 
 const AddWalletWrapper = styled.View`
-  align-items: center;
-  justify-content: center;
   height: ${HEIGHT}px;
   width: ${WIDTH}px;
 `
@@ -33,6 +31,11 @@ const styles = StyleSheet.create({
   flatlist: {
     overflow: 'hidden',
     borderRadius: SPACING,
+  },
+  addBtn: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
 
@@ -64,7 +67,7 @@ class ListWallet extends Component {
     return (
       <Wrapper>
         <AddWalletWrapper>
-          <Button onPress={onAddPress}>
+          <Button style={styles.addBtn} onPress={onAddPress}>
             <AntDesign name="plus" color="#fff" size={30} />
           </Button>
         </AddWalletWrapper>

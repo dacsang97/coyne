@@ -93,9 +93,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 24,
   },
-  buttonText: {
-    fontFamily: 'Helvetica Neue',
-  },
+  buttonText: {},
   disabled: {
     color: colors.GRAY,
   },

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import { AntDesign } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
@@ -90,13 +90,23 @@ class TabNavigatorScreen extends Component {
             isVisible={showModal}
             onBackButtonPress={this.hideChooseWallet}
             onBackdropPress={this.hideChooseWallet}
-            style={{ margin: 0, padding: SPACING, justifyContent: chooseWallet ? 'flex-end' : 'flex-start' }}
+            style={{
+              margin: 0,
+              padding: SPACING,
+              position: 'relative',
+            }}
           >
-            {chooseWallet ? (
-              <ListWallet onWalletPress={this.walletClicked} onAddPress={this.showAddWallet} />
-            ) : (
-              <AddWallet />
-            )}
+            <KeyboardAvoidingView
+              style={{ flex: 1, justifyContent: chooseWallet ? 'flex-end' : 'space-between' }}
+              behavior="padding"
+              enabled
+            >
+              {chooseWallet ? (
+                <ListWallet onWalletPress={this.walletClicked} onAddPress={this.showAddWallet} />
+              ) : (
+                <AddWallet />
+              )}
+            </KeyboardAvoidingView>
           </Modal>
         </Portal>
         <PlusIcon onLongPress={this.showChooseWallet} onPress={() => navigation.navigate('AddTransaction')} />

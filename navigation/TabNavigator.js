@@ -3,11 +3,11 @@ import { View, StyleSheet } from 'react-native'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import { AntDesign } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
-import { Portal, Text } from 'react-native-paper'
+import { Portal } from 'react-native-paper'
 import { observer } from 'mobx-react'
 import { Home, History, AddTransaction } from '../screens'
 import { PlusIcon } from '../components/monocules'
-import { ListWallet } from '../components/organisms'
+import { ListWallet, AddWallet } from '../components/organisms'
 import { SPACING } from '../constants/unit'
 import store from '../store'
 
@@ -56,7 +56,6 @@ class TabNavigatorScreen extends Component {
   hideChooseWallet = () => {
     this.setState({
       showModal: false,
-      chooseWallet: true,
     })
   }
 
@@ -87,6 +86,7 @@ class TabNavigatorScreen extends Component {
         <Portal>
           <Modal
             useNativeDriver
+            animationOut={chooseWallet ? 'slideOutDown' : 'slideOutUp'}
             isVisible={showModal}
             onBackButtonPress={this.hideChooseWallet}
             onBackdropPress={this.hideChooseWallet}
@@ -95,9 +95,7 @@ class TabNavigatorScreen extends Component {
             {chooseWallet ? (
               <ListWallet onWalletPress={this.walletClicked} onAddPress={this.showAddWallet} />
             ) : (
-              <View>
-                <Text>Ahihi</Text>
-              </View>
+              <AddWallet />
             )}
           </Modal>
         </Portal>

@@ -13,7 +13,6 @@ const operators = ['+', '-', '×', '÷']
 const buttonList = [['1', '2', '3', '÷'], ['4', '5', '6', '×'], ['7', '8', '9', '-'], ['C', '0', '<', '+']]
 
 const categoryList = [
-  /* eslint-disable global-require */
   {
     icon: 'moneybag',
     category: 'investments',
@@ -34,7 +33,6 @@ const categoryList = [
     icon: 'coffee',
     category: 'coffee',
   },
-  /* eslint-enable global-require */
 ]
 
 const styles = StyleSheet.create({
@@ -220,7 +218,6 @@ class AddSubMoney extends Component {
   }
 
   render() {
-    // eslint-disable-next-line
     const { money, currentString, category, type } = this.state
     return (
       <View style={styles.container}>

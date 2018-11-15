@@ -16,6 +16,9 @@ const Wallet = types
         .filter(transaction => transaction.type === 'income')
         .reduce((sum, transaction) => sum + transaction.money, 0)
     },
+    get pinned() {
+      return self.transactions.filter(transaction => transaction.pinned === true)
+    },
     get expense() {
       return self.transactions
         .filter(transaction => transaction.type === 'expense')

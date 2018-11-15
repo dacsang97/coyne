@@ -1,14 +1,14 @@
+/* eslint-disable react/jsx-no-bind */
 import React, { Component } from 'react'
-import { View, StyleSheet, Dimensions, ScrollView } from 'react-native'
+import { View, StyleSheet, Dimensions, ScrollView, FlatList } from 'react-native'
 import { observer } from 'mobx-react'
 import { Text, Button } from '../components/atoms'
-import { Today, CardMoney } from '../components/monocules'
+import { Today, CardMoney, Pinned } from '../components/monocules'
 import { BLACK_DARKER } from '../constants/colors'
 
 import store from '../store'
 
 const WIDTH = Dimensions.get('window').width
-
 const SPACING = 10
 
 const styles = StyleSheet.create({
@@ -39,8 +39,11 @@ const styles = StyleSheet.create({
 })
 @observer
 class Home extends Component {
+  keyExtractor = item => `${item.id}`
+
   navigate(screenName, props = {}) {
     const { navigation } = this.props
+    this.setPinned = this.setPinned.bind(this)
     navigation.navigate(screenName, {
       ...props,
     })
@@ -48,7 +51,7 @@ class Home extends Component {
 
   render() {
     const {
-      currentWallet: { income, expense, balance, unit },
+      currentWallet: { income, expense, balance, unit, pinned },
     } = store
 
     return (
@@ -63,6 +66,23 @@ class Home extends Component {
           <Text color="gray" medium upper>
             Pinned
           </Text>
+          <FlatList
+            data={pinned}
+            keyExtractor={this.keyExtractor}
+            renderItem={({ item }) => {
+              console.log(item.setPinned)
+              return (
+                <Pinned
+                  unit={unit}
+                  note={item.note}
+                  type={item.type}
+                  icon={item.icon}
+                  money={item.money}
+                  pinned={item.setPinned}
+                />
+              )
+            }}
+          />
         </View>
         <View style={styles.testArea}>
           <Text color="gray" medium upper>

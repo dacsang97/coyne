@@ -12,3 +12,5 @@ export { default as Today } from './Today'
 export { default as CardMoney } from './CardMoney'
 
 export { default as CardHistory } from './CardHistory'
+
+export { default as Pinned } from './Pinned'

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
-import { TouchableRipple } from 'react-native-paper'
+import { TouchableRipple, Checkbox } from 'react-native-paper'
 import { observer } from 'mobx-react'
 import Emoji from 'react-native-emoji'
 import { Text } from '../components/atoms'
@@ -162,6 +162,7 @@ class AddSubMoney extends Component {
       currentString: '', // full current string with operater
       currentOperator: '',
       category: '',
+      checked: false,
     }
   }
 
@@ -262,11 +263,11 @@ class AddSubMoney extends Component {
 
     const id = transactions.length + 1
 
-    const { icon, category, type, money } = this.state
+    const { icon, category, type, money, checked } = this.state
 
     const time = new Date()
 
-    add({ id, icon, category, type, money, time })
+    add({ id, icon, category, type, money, time, pinned: checked })
     navigation.navigate('Home')
   }
 
@@ -279,7 +280,7 @@ class AddSubMoney extends Component {
   }
 
   render() {
-    const { money, currentString, category, type } = this.state
+    const { money, currentString, category, type, checked } = this.state
     const {
       currentWallet: { unit },
     } = store
@@ -295,11 +296,32 @@ class AddSubMoney extends Component {
             <Text color="gray">{unit}</Text>
           </View>
           <Text color="gray">{currentString}</Text>
-          <TouchableRipple onPress={() => this.onChangeType()}>
-            <Text color={type === 'income' ? 'blue' : 'red'} size={18}>
-              {type.toUpperCase()}
-            </Text>
-          </TouchableRipple>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text upper color="gray">
+                Pinned
+              </Text>
+              <Checkbox
+                status={checked ? 'checked' : 'unchecked'}
+                onPress={() => {
+                  this.setState({ checked: !checked })
+                }}
+                uncheckedColor={colors.WHITE}
+                color={colors.RED}
+              />
+            </View>
+            <TouchableRipple onPress={() => this.onChangeType()}>
+              <Text color={type === 'income' ? 'blue' : 'red'} size={18}>
+                {type.toUpperCase()}
+              </Text>
+            </TouchableRipple>
+          </View>
         </View>
         <View style={{ height: 130 }}>
           <View style={styles.listWrapper}>

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { TouchableRipple } from 'react-native-paper'
 import { observer } from 'mobx-react'
-import shortid from 'shortid'
 import Emoji from 'react-native-emoji'
 import { Text } from '../components/atoms'
 import * as colors from '../constants/colors'
@@ -14,28 +13,44 @@ const operators = ['+', '-', '×', '÷']
 
 const buttonList = [['1', '2', '3', '÷'], ['4', '5', '6', '×'], ['7', '8', '9', '-'], ['C', '0', '<', '+']]
 
-const categoryList = [
-  {
-    icon: 'moneybag',
-    category: 'investments',
-  },
-  {
-    icon: 'tada',
-    category: 'Hack',
-  },
-  {
-    icon: 'gift',
-    category: 'gifts',
-  },
-  {
-    icon: 'womans_clothes',
-    category: 'clothes',
-  },
-  {
-    icon: 'coffee',
-    category: 'coffee',
-  },
-]
+const categoryList = {
+  expense: [
+    {
+      icon: 'moneybag',
+      category: 'investments',
+    },
+    {
+      icon: 'tada',
+      category: 'Hack',
+    },
+    {
+      icon: 'gift',
+      category: 'gifts',
+    },
+    {
+      icon: 'womans_clothes',
+      category: 'clothes',
+    },
+    {
+      icon: 'coffee',
+      category: 'coffee',
+    },
+  ],
+  income: [
+    {
+      icon: 'money_with_wings',
+      category: 'satary',
+    },
+    {
+      icon: 'gift',
+      category: 'gift',
+    },
+    {
+      icon: 'label',
+      category: 'sale',
+    },
+  ],
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -53,10 +68,6 @@ const styles = StyleSheet.create({
   },
   moneyWrapper: {
     height: 54,
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   listWrapper: {
     flex: 1,
@@ -199,18 +210,21 @@ class AddSubMoney extends Component {
     this.setState(() => cat)
   }
 
-  onSelectTransaction(type) {
-    this.setState(() => ({ type }))
+  onChangeType() {
+    const { type } = this.state
+    this.setState(() => ({
+      type: type === 'income' ? 'expense' : 'income',
+    }))
   }
 
   addTransaction() {
     const {
-      currentWallet: { add },
+      currentWallet: { add, transactions },
     } = store
 
     const { navigation } = this.props
 
-    const id = shortid.generate()
+    const id = transactions.length + 1
 
     const { icon, category, type, money } = this.state
 
@@ -242,33 +256,18 @@ class AddSubMoney extends Component {
             <Text color="gray">USD</Text>
           </View>
           <Text color="gray">{currentString}</Text>
-          <Text color="blue" size={18}>
-            {type.toUpperCase()}
-          </Text>
+          <TouchableRipple onPress={() => this.onChangeType()}>
+            <Text color="blue" size={18}>
+              {type.toUpperCase()}
+            </Text>
+          </TouchableRipple>
         </View>
-        <View style={{ height: 140 }}>
-          <View style={styles.buttonRow}>
-            <TouchableRipple>
-              <Text color="gray">New Category</Text>
-            </TouchableRipple>
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableRipple onPress={() => this.onSelectTransaction('income')} style={{ marginRight: 8 }}>
-                <Text color={type === 'income' ? 'blue' : 'gray'}>Income</Text>
-              </TouchableRipple>
-              <TouchableRipple onPress={() => this.onSelectTransaction('expense')}>
-                <Text color={type === 'expense' ? 'blue' : 'gray'}>Expense</Text>
-              </TouchableRipple>
-            </View>
-          </View>
+        <View style={{ height: 130 }}>
           <View style={styles.listWrapper}>
             <ScrollView style={styles.listCategory} horizontal>
-              {categoryList.map(cat => (
-                <TouchableRipple
-                  onPress={() => this.onSelectCategory(cat)}
-                  key={`category_${cat.category}`}
-                  style={[styles.category, cat.category === category && styles.selected]}
-                >
-                  <View>
+              {categoryList[type].map(cat => (
+                <TouchableRipple onPress={() => this.onSelectCategory(cat)} key={`category_${cat.category}`}>
+                  <View style={[styles.category, cat.category === category && styles.selected]}>
                     <Emoji name={cat.icon} style={{ fontSize: 24 }} />
                     <Text color="gray" size="18">
                       {cat.category}

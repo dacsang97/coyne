@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
+import { TouchableRipple } from 'react-native-paper'
 import { observer } from 'mobx-react'
 import Emoji from 'react-native-emoji'
-import { Button, Text } from '../components/atoms'
+import { Text } from '../components/atoms'
 import * as colors from '../constants/colors'
 
 import store from '../store'
@@ -12,28 +13,44 @@ const operators = ['+', '-', '×', '÷']
 
 const buttonList = [['1', '2', '3', '÷'], ['4', '5', '6', '×'], ['7', '8', '9', '-'], ['C', '0', '<', '+']]
 
-const categoryList = [
-  {
-    icon: 'moneybag',
-    category: 'investments',
-  },
-  {
-    icon: 'tada',
-    category: 'Hack',
-  },
-  {
-    icon: 'gift',
-    category: 'gifts',
-  },
-  {
-    icon: 'womans_clothes',
-    category: 'clothes',
-  },
-  {
-    icon: 'coffee',
-    category: 'coffee',
-  },
-]
+const categoryList = {
+  expense: [
+    {
+      icon: 'moneybag',
+      category: 'investments',
+    },
+    {
+      icon: 'tada',
+      category: 'Hack',
+    },
+    {
+      icon: 'gift',
+      category: 'gifts',
+    },
+    {
+      icon: 'womans_clothes',
+      category: 'clothes',
+    },
+    {
+      icon: 'coffee',
+      category: 'coffee',
+    },
+  ],
+  income: [
+    {
+      icon: 'money_with_wings',
+      category: 'satary',
+    },
+    {
+      icon: 'gift',
+      category: 'gift',
+    },
+    {
+      icon: 'label',
+      category: 'sale',
+    },
+  ],
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -51,10 +68,6 @@ const styles = StyleSheet.create({
   },
   moneyWrapper: {
     height: 54,
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   listWrapper: {
     flex: 1,
@@ -93,7 +106,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 24,
   },
-  buttonText: {},
   disabled: {
     color: colors.GRAY,
   },
@@ -109,17 +121,16 @@ class AddSubMoney extends Component {
     this.state = {
       type: 'income',
       money: 0,
-      // eslint-disable-next-line
       savedMoney: 0,
-      current: '',
-      currentString: '',
+      current: '', // string of current number
+      currentString: '', // full current string with operater
       currentOperator: '',
       category: '',
     }
   }
 
   onButtonPress(sign) {
-    const { current, currentOperator } = this.state
+    const { current, currentOperator, currentString, savedMoney } = this.state
     if (sign === 'C') {
       this.setState(() => ({
         money: 0,
@@ -152,6 +163,17 @@ class AddSubMoney extends Component {
       const currentMoney = sign === '<' ? current.substring(0, current.length - 1) : current + sign
       // break if current is empty
       if (currentMoney === '') {
+        // not have an operator yet, money is current string convert to number, current = ''
+        if (currentString.length === 1) {
+          this.setState(() => ({
+            money: 0,
+          }))
+        } else {
+          // had some operator, current = ''
+          this.setState(() => ({
+            money: savedMoney,
+          }))
+        }
         return
       }
       // if current is not empty, execute operator
@@ -188,22 +210,27 @@ class AddSubMoney extends Component {
     this.setState(() => cat)
   }
 
-  onSelectTransaction(type) {
-    this.setState(() => ({ type }))
+  onChangeType() {
+    const { type } = this.state
+    this.setState(() => ({
+      type: type === 'income' ? 'expense' : 'income',
+    }))
   }
 
   addTransaction() {
     const {
-      currentWallet: { add },
+      currentWallet: { add, transactions },
     } = store
 
     const { navigation } = this.props
+
+    const id = transactions.length + 1
 
     const { icon, category, type, money } = this.state
 
     const time = new Date()
 
-    add({ icon, category, type, money, time })
+    add({ id, icon, category, type, money, time })
     navigation.navigate('Home')
   }
 
@@ -229,37 +256,24 @@ class AddSubMoney extends Component {
             <Text color="gray">USD</Text>
           </View>
           <Text color="gray">{currentString}</Text>
-          <Text color="blue" size={18}>
-            {type.toUpperCase()}
-          </Text>
+          <TouchableRipple onPress={() => this.onChangeType()}>
+            <Text color="blue" size={18}>
+              {type.toUpperCase()}
+            </Text>
+          </TouchableRipple>
         </View>
-        <View style={{ height: 140 }}>
-          <View style={styles.buttonRow}>
-            <Button>
-              <Text color="gray">New Category</Text>
-            </Button>
-            <View style={{ flexDirection: 'row' }}>
-              <Button onPress={() => this.onSelectTransaction('income')} style={{ marginRight: 8 }}>
-                <Text color={type === 'income' ? 'blue' : 'gray'}>Income</Text>
-              </Button>
-              <Button onPress={() => this.onSelectTransaction('expense')}>
-                <Text color={type === 'expense' ? 'blue' : 'gray'}>Expense</Text>
-              </Button>
-            </View>
-          </View>
+        <View style={{ height: 130 }}>
           <View style={styles.listWrapper}>
             <ScrollView style={styles.listCategory} horizontal>
-              {categoryList.map(cat => (
-                <Button
-                  onPress={() => this.onSelectCategory(cat)}
-                  key={`category_${cat.category}`}
-                  style={[styles.category, cat.category === category && styles.selected]}
-                >
-                  <Emoji name={cat.icon} style={{ fontSize: 24 }} />
-                  <Text color="gray" size="18">
-                    {cat.category}
-                  </Text>
-                </Button>
+              {categoryList[type].map(cat => (
+                <TouchableRipple onPress={() => this.onSelectCategory(cat)} key={`category_${cat.category}`}>
+                  <View style={[styles.category, cat.category === category && styles.selected]}>
+                    <Emoji name={cat.icon} style={{ fontSize: 24 }} />
+                    <Text color="gray" size="18">
+                      {cat.category}
+                    </Text>
+                  </View>
+                </TouchableRipple>
               ))}
             </ScrollView>
           </View>
@@ -268,7 +282,7 @@ class AddSubMoney extends Component {
           {buttonList.map(row => (
             <View key={`button_${row}`} style={styles.row}>
               {row.map(sign => (
-                <Button
+                <TouchableRipple
                   onPress={() => this.onButtonPress(sign)}
                   disabled={this.disableButton(sign)}
                   key={`button_${sign}`}
@@ -286,17 +300,17 @@ class AddSubMoney extends Component {
                   >
                     {sign}
                   </Text>
-                </Button>
+                </TouchableRipple>
               ))}
             </View>
           ))}
         </View>
         <View style={{ alignItems: 'center' }}>
-          <Button onPress={() => this.addTransaction()}>
+          <TouchableRipple onPress={() => this.addTransaction()}>
             <Text size={18} color="blue">
               ADD TRANSACTION
             </Text>
-          </Button>
+          </TouchableRipple>
         </View>
       </View>
     )

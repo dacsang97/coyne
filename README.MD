@@ -6,7 +6,7 @@
 
 ## Introduction
 
-Coyne application is designed to help you to management your money.
+Coyne application is designed to help you to manage your money.
 
 #### Device Compatibility
 

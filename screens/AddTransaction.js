@@ -109,7 +109,6 @@ class AddSubMoney extends Component {
     this.state = {
       type: 'income',
       money: 0,
-      // eslint-disable-next-line
       savedMoney: 0,
       current: '', // string of current number
       currentString: '', // full current string with operater
@@ -205,16 +204,18 @@ class AddSubMoney extends Component {
 
   addTransaction() {
     const {
-      currentWallet: { add },
+      currentWallet: { add, transactions },
     } = store
 
     const { navigation } = this.props
+
+    const id = transactions.length + 1
 
     const { icon, category, type, money } = this.state
 
     const time = new Date()
 
-    add({ icon, category, type, money, time })
+    add({ id, icon, category, type, money, time })
     navigation.navigate('Home')
   }
 

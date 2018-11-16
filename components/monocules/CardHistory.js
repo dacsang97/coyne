@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 const weekDay = getDayOfWeek()
 const day = getDay()
 
-const CardHistory = ({ icon, unit, money, type, note }) => (
+const CardHistory = ({ icon, unit, money, type, category }) => (
   <View>
     <View style={styles.cash}>
       <View style={styles.icon}>
@@ -49,7 +49,7 @@ const CardHistory = ({ icon, unit, money, type, note }) => (
           {money}
         </Text>
         <Text color="gray" upper medium>
-          {note}
+          {category}
         </Text>
       </View>
     </View>
@@ -64,7 +64,7 @@ const CardHistory = ({ icon, unit, money, type, note }) => (
 CardHistory.propTypes = {
   money: PropTypes.number.isRequired,
   unit: PropTypes.string.isRequired,
-  note: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
 }

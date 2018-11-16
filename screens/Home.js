@@ -1,8 +1,7 @@
-/* eslint-disable react/jsx-no-bind */
 import React, { Component } from 'react'
 import { View, StyleSheet, Dimensions, ScrollView, FlatList } from 'react-native'
 import { observer } from 'mobx-react'
-import { Text, Button } from '../components/atoms'
+import { Text } from '../components/atoms'
 import { Today, CardMoney, Pinned } from '../components/monocules'
 import { BLACK_DARKER } from '../constants/colors'
 
@@ -69,28 +68,17 @@ class Home extends Component {
           <FlatList
             data={pinned}
             keyExtractor={this.keyExtractor}
-            renderItem={({ item }) => {
-              console.log(item.setPinned)
-              return (
-                <Pinned
-                  unit={unit}
-                  note={item.note}
-                  type={item.type}
-                  icon={item.icon}
-                  money={item.money}
-                  pinned={item.setPinned}
-                />
-              )
-            }}
+            renderItem={({ item }) => (
+              <Pinned
+                unit={unit}
+                category={item.category}
+                type={item.type}
+                icon={item.icon}
+                money={item.money}
+                pinned={item.setPinned}
+              />
+            )}
           />
-        </View>
-        <View style={styles.testArea}>
-          <Text color="gray" medium upper>
-            Test area
-          </Text>
-          <Button onPress={() => this.navigate('Test')}>
-            <Text>Go to Test screen</Text>
-          </Button>
         </View>
       </ScrollView>
     )

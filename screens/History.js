@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { TextInput, View, StyleSheet, FlatList } from 'react-native'
+import { View, StyleSheet, FlatList } from 'react-native'
 import { observer } from 'mobx-react'
 import { Text } from '../components/atoms'
 import { BLACK_DARKER, BLACK } from '../constants/colors'
 import store from '../store'
-import { getDayOfWeek, getDay } from '../utils/date'
+import { getDay } from '../utils/date'
 import { CardHistory } from '../components/monocules'
 
 const SPACING = 10
@@ -14,15 +14,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BLACK_DARKER,
     padding: SPACING,
-  },
-  searchInput: {
-    borderRadius: 50,
-    borderWidth: 0.5,
-    borderColor: BLACK,
-    backgroundColor: BLACK,
-    height: 30,
-    paddingLeft: 10,
-    color: 'white',
   },
   checkHistory: {
     flexDirection: 'row',
@@ -67,19 +58,12 @@ class History extends Component {
   }
 
   render() {
-    const weekDay = getDayOfWeek()
     const day = getDay()
     const {
-      currentWallet: { income, expense, unit, transactions },
+      currentWallet: { name, income, expense, unit, transactions },
     } = store
     return (
       <View style={styles.screen}>
-        <TextInput
-          style={styles.searchInput}
-          placeholderTextColor="#9e9e9e"
-          placeholder="e.g .."
-          onChangeText={text => console.log(text)}
-        />
         <View style={styles.checkHistory}>
           <View style={styles.leftHistory}>
             <Text color="blue" medium>
@@ -92,8 +76,8 @@ class History extends Component {
             </Text>
           </View>
           <View style={styles.rightHistory}>
-            <Text color="white" medium>
-              {weekDay}
+            <Text color="white" medium upper>
+              {name}
             </Text>
             <Text color="gray" medium>
               {day}
@@ -104,7 +88,7 @@ class History extends Component {
           data={transactions}
           keyExtractor={this.keyExtractor}
           renderItem={({ item }) => (
-            <CardHistory unit={unit} note={item.note} type={item.type} icon={item.icon} money={item.money} />
+            <CardHistory unit={unit} category={item.category} type={item.type} icon={item.icon} money={item.money} />
           )}
         />
       </View>

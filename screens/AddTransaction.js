@@ -16,38 +16,74 @@ const buttonList = [['1', '2', '3', '÷'], ['4', '5', '6', '×'], ['7', '8', '9'
 const categoryList = {
   expense: [
     {
-      icon: 'moneybag',
-      category: 'investments',
+      icon: 'hamburger',
+      category: 'Eating',
     },
     {
-      icon: 'tada',
-      category: 'Hack',
+      icon: 'label',
+      category: 'Bills',
     },
     {
-      icon: 'gift',
-      category: 'gifts',
+      icon: 'taxi',
+      category: 'Move',
     },
     {
-      icon: 'womans_clothes',
-      category: 'clothes',
+      icon: 'shopping_bags',
+      category: 'Shopping',
     },
     {
-      icon: 'coffee',
-      category: 'coffee',
+      icon: 'love_letter',
+      category: 'Love',
+    },
+    {
+      icon: 'video_game',
+      category: 'Play',
+    },
+    {
+      icon: 'airplane',
+      category: 'Travel',
+    },
+    {
+      icon: 'hospital',
+      category: 'Health',
+    },
+    {
+      icon: 'house_buildings',
+      category: 'Family',
+    },
+    {
+      icon: 'mortar_board',
+      category: 'Education',
+    },
+    {
+      icon: '100',
+      category: 'Investment',
+    },
+    {
+      icon: 'scales',
+      category: 'Other',
     },
   ],
   income: [
     {
       icon: 'money_with_wings',
-      category: 'satary',
+      category: 'Salary',
     },
     {
       icon: 'gift',
-      category: 'gift',
+      category: 'Gift',
     },
     {
       icon: 'label',
-      category: 'sale',
+      category: 'Sale',
+    },
+    {
+      icon: 'bank',
+      category: 'Interest',
+    },
+    {
+      icon: 'fire',
+      category: 'Other',
     },
   ],
 }
@@ -244,6 +280,9 @@ class AddSubMoney extends Component {
 
   render() {
     const { money, currentString, category, type } = this.state
+    const {
+      currentWallet: { unit },
+    } = store
     return (
       <View style={styles.container}>
         <View style={styles.moneyContainer}>
@@ -253,11 +292,11 @@ class AddSubMoney extends Component {
                 {money.toFixed(0)}
               </Text>
             </View>
-            <Text color="gray">USD</Text>
+            <Text color="gray">{unit}</Text>
           </View>
           <Text color="gray">{currentString}</Text>
           <TouchableRipple onPress={() => this.onChangeType()}>
-            <Text color="blue" size={18}>
+            <Text color={type === 'income' ? 'blue' : 'red'} size={18}>
               {type.toUpperCase()}
             </Text>
           </TouchableRipple>

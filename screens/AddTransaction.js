@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { TouchableRipple } from 'react-native-paper'
 import { observer } from 'mobx-react'
+import shortid from 'shortid'
 import Emoji from 'react-native-emoji'
 import { Text } from '../components/atoms'
 import * as colors from '../constants/colors'
@@ -204,12 +205,12 @@ class AddSubMoney extends Component {
 
   addTransaction() {
     const {
-      currentWallet: { add, transactions },
+      currentWallet: { add },
     } = store
 
     const { navigation } = this.props
 
-    const id = transactions.length + 1
+    const id = shortid.generate()
 
     const { icon, category, type, money } = this.state
 

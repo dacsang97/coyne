@@ -11,7 +11,9 @@ const styles = StyleSheet.create({
   },
 })
 
-const Input = ({ placeholder }) => <TextInput style={styles.input} placeholder={placeholder} />
+const Input = ({ placeholder, value, onChange }) => (
+  <TextInput style={styles.input} placeholder={placeholder} value={value} onChangeText={onChange} returnKeyType="go" />
+)
 
 Input.defaultProps = {
   placeholder: '',
@@ -19,6 +21,8 @@ Input.defaultProps = {
 
 Input.propTypes = {
   placeholder: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 export default Input

@@ -1,3 +1,3 @@
-import { RectButton } from 'react-native-gesture-handler'
+import { TouchableOpacity } from 'react-native'
 
-export default RectButton
+export default TouchableOpacity

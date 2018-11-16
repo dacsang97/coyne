@@ -15,6 +15,9 @@ const Store = types
     changeCurrentWallet(id) {
       self.current = id
     },
+    addWallet(wallet) {
+      self.wallets.push(wallet)
+    },
   }))
 
 export default Store
